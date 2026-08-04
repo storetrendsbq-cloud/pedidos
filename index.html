@@ -13,30 +13,30 @@
             --bg-card: #ffffff;
             --primary: #0d9488;
             --primary-hover: #0f766e;
+            --primary-active: #0b5e58;
             --text-main: #334155;
             --text-muted: #64748b;
             --border-color: #e2e8f0;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-
-        /* HEADER */
+        
+        /* HEADER SUPERIOR */
         header { height: 70px; background-color: var(--bg-card); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.02); z-index: 10; }
         .header-left { display: flex; align-items: center; gap: 24px; }
         .logo-container { display: flex; align-items: center; gap: 12px; }
-        .logo-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+        .logo-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); box-shadow: 0 2px 4px rgba(13,148,136,0.2); }
         .logo-text { font-size: 22px; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; }
         .page-title { font-size: 16px; font-weight: 600; color: var(--text-muted); border-left: 2px solid var(--border-color); padding-left: 24px; }
-        
         .header-right { display: flex; align-items: center; gap: 20px; }
         .user-profile { display: flex; align-items: center; gap: 12px; background: #f1f5f9; padding: 6px 16px 6px 6px; border-radius: 30px;}
         .avatar { width: 32px; height: 32px; border-radius: 50%; background-color: #0f172a; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px;}
         .user-info h4 { font-size: 13px; margin: 0; color: #0f172a;}
+        
         .btn-sync { background-color: white; border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text-main); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
         .btn-sync:hover { background-color: #f1f5f9; border-color: #cbd5e1; }
 
-        /* CONTENIDO Y PESTAÑAS */
+        /* CONTENIDO PRINCIPAL Y PESTAÑAS */
         main { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; padding: 24px 32px; }
         .tabs-container { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); flex-shrink: 0;}
         .tab-btn { padding: 12px 24px; background: none; border: none; font-size: 15px; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; margin-bottom: -2px;}
@@ -44,7 +44,7 @@
         .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
         .tab-content { display: none; flex-direction: column; flex-grow: 1; overflow: hidden; }
         .tab-content.active { display: flex; }
-
+        
         /* KPIs */
         .kpi-grid { display: flex; gap: 24px; margin-bottom: 24px; flex-shrink: 0;}
         .kpi-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px 24px; flex: 1; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
@@ -56,38 +56,74 @@
         .icon-blue { background-color: #dbeafe; color: #2563eb; }
         .status-dot { display: inline-block; width: 10px; height: 10px; background-color: #22c55e; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 0 3px #dcfce7; }
 
-        /* TABLAS */
+        /* TABLAS Y HERRAMIENTAS */
         .table-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
         .table-header { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; background: #f8fafc; }
         .table-header-title { display: flex; align-items: center; gap: 12px; }
         .table-header h2 { font-size: 15px; font-weight: 700; color: #0f172a; }
+        
+        .date-picker-container { display: flex; align-items: center; gap: 12px; }
+        .date-input { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; font-weight: 600; color: #0f172a; outline: none; }
+        .date-input:focus { border-color: var(--primary); }
+        
+        /* BOTÓN DE CALCULAR MEJORADO (EFECTO TÁCTIL) */
+        .btn-calc { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 8px; 
+            font-size: 14px;
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.15s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-calc:hover { 
+            background: var(--primary-hover); 
+            transform: translateY(-2px); /* Se eleva un poquito */
+            box-shadow: 0 6px 8px -1px rgba(13, 148, 136, 0.3);
+        }
+        .btn-calc:active { 
+            background: var(--primary-active);
+            transform: translateY(2px); /* Efecto de hundimiento real */
+            box-shadow: 0 1px 2px -1px rgba(13, 148, 136, 0.3);
+        }
+
         .table-container { width: 100%; overflow: auto; flex-grow: 1; }
         .table-container::-webkit-scrollbar { width: 8px; height: 8px; }
         .table-container::-webkit-scrollbar-track { background: #f1f5f9; }
         .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .table-container::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
         table { width: 100%; border-collapse: collapse; min-width: 1400px; }
         #liq-table { min-width: 100%; }
         th, td { padding: 12px 16px; text-align: left; font-size: 12px; border-bottom: 1px solid var(--border-color); }
         th { position: sticky; top: 0; background-color: #f8fafc; font-weight: 700; color: var(--text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; white-space: nowrap; z-index: 2; box-shadow: 0 1px 0 var(--border-color); }
-        tbody tr:hover { background-color: #f1f5f9; }
+        tbody tr:hover { background-color: #f1f5f9; transition: background 0.2s; }
 
-        /* CELDAS Y BADGES */
+        /* CELDAS Y ESTILOS */
         .truncate-cell { max-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }
         .td-id { font-weight: 700; color: var(--primary); width: 60px; }
         .td-cliente { font-weight: 700; color: #0f172a; }
         .td-contact i { color: #94a3b8; width: 14px; text-align: center; margin-right: 4px; }
         .td-cant { font-weight: 800; color: #334155; background: #e2e8f0; padding: 2px 8px; border-radius: 4px;}
-        .td-price { font-weight: 600; color: #059669; }
+        .td-price { font-weight: 700; color: #059669; }
         .text-center { text-align: center; }
+        
         .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; }
         .status-ingresado { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
         .status-despachado { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
         .status-pendiente { background-color: #fef08a; color: #b45309; border: 1px solid #fde047; }
+        
         .link-soporte { display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: #2563eb; font-weight: 600; text-decoration: none; background: #eff6ff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s; white-space: nowrap; font-size: 11px;}
         .link-soporte:hover { background: #dbeafe; color: #1d4ed8; }
         .no-soporte { color: #94a3b8; font-style: italic; font-size: 11px; white-space: nowrap;}
-
-        /* BOTONES DE ACCIÓN */
+        
+        /* BOTONES DE ACCIÓN LOGÍSTICA */
         .action-container { display: flex; gap: 8px; justify-content: center; }
         .btn-action { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; white-space: nowrap; }
         .btn-guia { background-color: #0f172a; color: white; border-color: #0f172a; }
@@ -95,34 +131,34 @@
         .btn-moto { background-color: #dcfce7; border-color: #86efac; color: #16a34a; }
         .btn-moto:hover { background-color: #bbf7d0; }
         .btn-notify { background-color: #10b981; border-color: #059669; color: white; width: 100%; font-size: 12px; padding: 8px;}
-        
-        /* HERRAMIENTAS LIQUIDACION */
-        .date-picker-container { display: flex; align-items: center; gap: 12px; }
-        .date-input { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; font-weight: 600; color: #0f172a; outline: none; }
-        .date-input:focus { border-color: var(--primary); }
-        .btn-calc { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s;}
-        .btn-calc:hover { background: var(--primary-hover); }
+        .btn-notify:hover { background-color: #059669; }
 
-        /* MODALES */
-        .loader-container { padding: 40px; text-align: center; color: var(--primary); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; font-weight: 600;}
+        /* ANIMACIONES Y MODALES */
+        .loader-container { padding: 40px; text-align: center; color: var(--primary); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .error-container { padding: 40px; text-align: center; color: #ef4444; font-weight: 500; }
         .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 50; }
         .modal-overlay.active { display: flex; }
         .modal-content { background: white; width: 100%; max-width: 450px; border-radius: 16px; padding: 32px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
         .modal-icon { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 20px; }
-        .modal-icon.info { background: #e0f2fe; color: #0284c7; }
         .modal-icon.success { background: #dcfce7; color: #16a34a; }
+        .modal-icon.info { background: #e0f2fe; color: #0284c7; }
         .modal-title { font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 12px; }
         .modal-text { font-size: 14px; color: #475569; margin-bottom: 24px; line-height: 1.6; white-space: pre-line;}
         .modal-input-group { margin-bottom: 24px; display: none; }
-        .modal-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 15px; font-weight: 600; text-align: center; outline: none; }
+        .modal-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 15px; font-weight: 600; text-align: center; outline: none; transition: border-color 0.2s;}
+        .modal-input:focus { border-color: var(--primary); }
         .modal-buttons { display: flex; gap: 12px; }
-        .modal-btn { flex: 1; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; border: none;}
+        .modal-btn { flex: 1; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s; border: none;}
         .modal-btn-cancel { background: #f1f5f9; color: #475569; display: none;}
+        .modal-btn-cancel:hover { background: #e2e8f0; }
         .modal-btn-primary { background: var(--primary); color: white; }
+        .modal-btn-primary:hover { background: var(--primary-hover); }
     </style>
 </head>
 <body>
-
     <header>
         <div class="header-left">
             <div class="logo-container">
@@ -132,7 +168,7 @@
             <div class="page-title">Centro de Despachos</div>
         </div>
         <div class="header-right">
-            <button class="btn-sync" onclick="cargarDatosDesdeGoogle()">
+            <button class="btn-sync" onclick="cargarPedidosDesdeGoogle()">
                 <i class="fa-solid fa-arrows-rotate"></i> Sincronizar Datos
             </button>
             <div class="user-profile">
@@ -145,7 +181,7 @@
     </header>
 
     <main>
-        <!-- PESTAÑAS -->
+        <!-- NAVEGACIÓN DE PESTAÑAS -->
         <div class="tabs-container">
             <button class="tab-btn active" onclick="switchTab('pedidos', this)"><i class="fa-solid fa-box"></i> Pedidos</button>
             <button class="tab-btn" onclick="switchTab('pqr', this)"><i class="fa-solid fa-headset"></i> Gestión PQR</button>
@@ -181,6 +217,7 @@
                 <div class="table-container">
                     <table>
                         <thead>
+                            <!-- ENCABEZADOS EXACTOS SOLICITADOS -->
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre del Cliente</th>
@@ -189,8 +226,9 @@
                                 <th>Ciudad</th>
                                 <th>Dirección</th>
                                 <th>Nombre del Producto</th>
-                                <th class="text-center">Cantidad</th>
+                                <th>Cantidad</th>
                                 <th>Precio Unitario</th>
+                                <th class="text-center">Cant.</th>
                                 <th class="text-center">Estado</th>
                                 <th class="text-center">Soporte Pago</th>
                                 <th class="text-center" style="min-width: 180px;">Acción Logística</th>
@@ -210,7 +248,7 @@
                 <div class="table-header">
                     <div class="table-header-title">
                         <i class="fa-solid fa-triangle-exclamation" style="color: #ea580c; font-size: 18px;"></i>
-                        <h2>Gestión de PQR y Garantías</h2>
+                        <h2>Gestión de PQR y Novedades</h2>
                     </div>
                 </div>
                 <div class="table-container">
@@ -258,12 +296,14 @@
                 <div class="table-header">
                     <div class="table-header-title">
                         <i class="fa-solid fa-calculator" style="color: var(--primary); font-size: 18px;"></i>
-                        <h2>Liquidación Consolidada</h2>
+                        <h2>Consolidado de Ventas</h2>
                     </div>
                     <div class="date-picker-container">
-                        <!-- El input ahora calcula los totales apenas seleccionas un día -->
                         <input type="date" id="liq-date" class="date-input" onchange="calcularLiquidacion()">
-                        <button class="btn-calc" onclick="calcularLiquidacion()">Calcular Totales</button>
+                        <!-- BOTÓN VIVO Y DINÁMICO -->
+                        <button class="btn-calc" onclick="calcularLiquidacion()">
+                            <i class="fa-solid fa-rotate-right"></i> Calcular Totales
+                        </button>
                     </div>
                 </div>
                 <div class="table-container">
@@ -276,7 +316,7 @@
                             </tr>
                         </thead>
                         <tbody id="liq-table-body">
-                            <tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">Selecciona una fecha en el calendario.</td></tr>
+                            <tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">Selecciona una fecha y haz clic en calcular.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -287,7 +327,7 @@
     <!-- Modal Base -->
     <div id="custom-modal" class="modal-overlay">
         <div class="modal-content">
-            <div id="modal-icon" class="modal-icon info"><i class="fa-solid fa-paste"></i></div>
+            <div id="modal-icon" class="modal-icon info"><i class="fa-solid fa-circle-info"></i></div>
             <h3 id="modal-title" class="modal-title">Título</h3>
             <p id="modal-message" class="modal-text">Mensaje</p>
             <div id="modal-input-group" class="modal-input-group">
@@ -295,7 +335,7 @@
             </div>
             <div class="modal-buttons">
                 <button id="modal-btn-cancel" class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancelar</button>
-                <button id="modal-btn-primary" class="modal-btn modal-btn-primary" onclick="closeModal()">Guardar</button>
+                <button id="modal-btn-primary" class="modal-btn modal-btn-primary" onclick="closeModal()">Entendido</button>
             </div>
         </div>
     </div>
@@ -306,15 +346,13 @@
         // ==========================================
         const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyJtdneZrgKDEj9bJK9rVxEyi3PUuV106Jt0czn1UsiOrUz3KQvyUl9oHplIqOMtj5J2w/exec?action=getPedidos";
         
-        // Creamos la URL para PQR automáticamente
+        // URL Dinámica para PQR
         const GOOGLE_URL_PQR = GOOGLE_WEB_APP_URL.replace("getPedidos", "getPQR");
-        
         const NUMERO_DOMICILIARIO = "573054813630"; 
 
         let dbOrders = [];
         let dbPQRs = [];
         
-        // Función vital para formatear precios sin que el sistema colapse
         const formatCurrency = (val) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(val);
 
         // Control de Pestañas
@@ -325,53 +363,53 @@
             document.getElementById('tab-' + tabId).classList.add('active');
         }
 
-        // CARGAR DATOS (Ventas y PQR)
-        async function cargarDatosDesdeGoogle() {
-            document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="12" class="loader-container">Cargando Pedidos...</td></tr>`;
-            document.getElementById('pqr-table-body').innerHTML = `<tr><td colspan="8" class="loader-container">Cargando PQR...</td></tr>`;
+        // CARGAR DATOS
+        async function cargarPedidosDesdeGoogle() {
+            document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="13" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando Pedidos...</p></td></tr>`;
+            document.getElementById('pqr-table-body').innerHTML = `<tr><td colspan="8" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando PQR...</p></td></tr>`;
             
             try {
                 const [resPedidos, resPQR] = await Promise.all([
-                    fetch(GOOGLE_WEB_APP_URL).catch(()=>null),
-                    fetch(GOOGLE_URL_PQR).catch(()=>null)
+                    fetch(GOOGLE_WEB_APP_URL, { redirect: "follow" }).catch(()=>null),
+                    fetch(GOOGLE_URL_PQR, { redirect: "follow" }).catch(()=>null)
                 ]);
 
                 if (resPedidos && resPedidos.ok) {
                     const datosExcel = await resPedidos.json();
                     
-                    // Buscador inteligente de columnas
-                    dbOrders = datosExcel.filter(fila => fila['Número de Pedido'] || fila['# Pedido'] || fila['Consecutivo']).reverse().map((fila, i) => {
+                    // ESCUDO DE ENCABEZADOS: Mapeo inteligente sin importar si cambias el nombre de la columna
+                    dbOrders = datosExcel.filter(fila => fila['Número de Pedido'] || fila['# Pedido'] || Object.values(fila)[1]).reverse().map((fila, i) => {
                         return {
-                            id: fila['Número de Pedido'] || fila['# Pedido'] || fila['Consecutivo'] || (i+1),
-                            cliente: fila['Cliente'] || fila['Nombre completo'] || fila['Nombre del Cliente'] || 'Sin nombre',
-                            telefono: fila['Teléfono'] || fila['Telefono'] || fila['Celular'] || 'Sin teléfono',
-                            correo: fila['Email'] || fila['Correo'] || fila['Correo electrónico'] || 'Sin correo',
-                            ciudad: fila['Ciudad'] || '',
-                            direccion: fila['Dirección'] || fila['Direccion'] || '',
-                            producto: fila['Producto'] || fila['Nombre del Producto'] || fila['Referencia'] || 'Producto',
-                            cantidad: fila['Cantidad'] || fila['Cant.'] || '1',
-                            precioUnitario: fila['Precio Unitario'] || fila['Precio'] || '0',
-                            fecha: fila['Fecha'] || fila['Fecha Compra'] || fila['Fecha de Compra'] || '',
+                            id: fila['Número de Pedido'] || fila['# Pedido'] || fila['ID'] || Object.values(fila)[1] || (i+1),
+                            cliente: fila['Nombre del Cliente'] || fila['Nombre completo'] || fila['Cliente'] || Object.values(fila)[8] || 'Sin nombre',
+                            telefono: fila['Teléfono'] || fila['Telefono'] || Object.values(fila)[10] || 'Sin teléfono',
+                            correo: fila['Correo'] || fila['Correo electrónico'] || Object.values(fila)[9] || 'Sin correo',
+                            ciudad: fila['Ciudad'] || Object.values(fila)[12] || '',
+                            direccion: fila['Dirección'] || fila['Direccion'] || Object.values(fila)[11] || '',
+                            producto: fila['Nombre del Producto'] || fila['Producto'] || Object.values(fila)[3] || 'Producto',
+                            cantidad: fila['Cantidad'] || fila['Cant.'] || Object.values(fila)[4] || '1',
+                            precioUnitario: fila['Precio Unitario'] || fila['Precio COP'] || Object.values(fila)[5] || '0',
+                            fecha: fila['Fecha'] || fila['Date'] || Object.values(fila)[2] || '',
                             linkPago: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
                             guia: fila['Guia'] || fila['Guía'] ? (fila['Guia'] || fila['Guía']) : null
                         };
                     });
-                    renderPedidos();
-                    calcularLiquidacion(); // Calculamos la liquidación de hoy automáticamente
+                    renderTable();
+                    calcularLiquidacion(); // Calcula automáticamente si hay fecha
                 }
 
                 if (resPQR && resPQR.ok) {
                     const datosPQR = await resPQR.json();
-                    dbPQRs = datosPQR.filter(fila => fila['Número Pedido'] || fila['ID Pedido']).reverse().map(fila => {
+                    dbPQRs = datosPQR.filter(fila => fila['Número Pedido'] || fila['ID Pedido'] || Object.values(fila)[0]).reverse().map(fila => {
                         return {
-                            idPedido: fila['Número Pedido'] || fila['ID Pedido'],
-                            fecha: fila['Fecha de registro de novedad'] || fila['Fecha'] || '',
-                            novedad: fila['Novedad'] || fila['Tipo Novedad'] || '',
-                            cliente: fila['Cliente'] || fila['Nombre'] || '',
-                            telefono: fila['Teléfono'] || fila['Telefono'] || '',
-                            descripcion: fila['Descripcion (Resumida)'] || fila['Descripcion'] || '',
+                            idPedido: fila['Número Pedido'] || fila['ID Pedido'] || Object.values(fila)[0],
+                            fecha: fila['Fecha de registro de novedad'] || fila['Fecha'] || Object.values(fila)[1] || '',
+                            novedad: fila['Novedad'] || fila['Tipo Novedad'] || Object.values(fila)[2] || '',
+                            cliente: fila['Cliente'] || fila['Nombre'] || Object.values(fila)[7] || '',
+                            telefono: fila['Teléfono'] || fila['Telefono'] || Object.values(fila)[9] || '',
+                            descripcion: fila['Descripcion (Resumida)'] || fila['Descripcion'] || Object.values(fila)[6] || '',
                             evidencia: fila['Foto evidencia (Drive Real)'] || fila['Foto evidencia'] || Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
-                            estado: fila['Estado (Resuelto / Pendiente)'] || fila['Estado'] || ''
+                            estado: fila['Estado (Resuelto / Pendiente)'] || fila['Estado'] || Object.values(fila)[15] || ''
                         };
                     });
                     renderPQR();
@@ -379,18 +417,18 @@
 
             } catch (error) {
                 console.error(error);
-                document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="12" class="error-container">Error de Conexión</td></tr>`;
+                document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="13" class="error-container"><i class="fa-solid fa-triangle-exclamation" style="font-size: 24px; margin-bottom: 8px; display:block;"></i> Error de Conexión.<br><span style="font-size: 12px; font-weight: normal; margin-top: 4px; display: block; color: #64748b;">Verifica tu URL de Google Apps Script.</span></td></tr>`;
             }
         }
 
-        // RENDERIZAR TABLA DE VENTAS
-        function renderPedidos() {
+        // RENDERIZAR PEDIDOS
+        function renderTable() {
             const tbody = document.getElementById('orders-table-body');
             tbody.innerHTML = '';
             let pendientes = 0;
 
             if (dbOrders.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="12" class="loader-container" style="color: #94a3b8;">No se encontraron pedidos.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="13" class="loader-container" style="color: #94a3b8;">No se encontraron pedidos.</td></tr>`;
                 document.getElementById('kpi-pendientes').textContent = "0";
                 return;
             }
@@ -416,8 +454,9 @@
                     <td class="truncate-cell" title="${order.ciudad}">${order.ciudad}</td>
                     <td class="td-contact truncate-cell" title="${order.direccion}"><i class="fa-solid fa-location-dot"></i> ${order.direccion}</td>
                     <td class="truncate-cell" title="${order.producto}" style="font-weight: 600;">${order.producto}</td>
-                    <td class="text-center" title="Cantidad: ${order.cantidad}"><span class="td-cant">${order.cantidad}</span></td>
+                    <td class="text-center"><span class="td-cant">${order.cantidad}</span></td>
                     <td class="td-price">${formatCurrency(precioLimpio)}</td>
+                    <td class="text-center"><span class="td-cant">${order.cantidad}</span></td>
                     <td class="text-center"><span class="status-badge ${estadoClass}">${estadoText}</span></td>
                     <td class="text-center">
                         ${order.linkPago ? 
@@ -440,7 +479,7 @@
             document.getElementById('kpi-pendientes').textContent = pendientes;
         }
 
-        // RENDERIZAR TABLA PQR
+        // RENDERIZAR PQR
         function renderPQR() {
             const tbody = document.getElementById('pqr-table-body');
             tbody.innerHTML = '';
@@ -472,96 +511,108 @@
             });
         }
 
-        // LÓGICA DE LIQUIDACIÓN DIARIA
+        // LIQUIDACIÓN DIARIA INVENCIBLE
         function calcularLiquidacion() {
             const tableBodyLiq = document.getElementById('liq-table-body');
-            const dateInput = document.getElementById('liq-date').value; // Formato: YYYY-MM-DD
+            const dateInput = document.getElementById('liq-date').value; 
             
-            if(!dateInput) {
-                tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #ef4444; font-weight:600; padding: 40px;">Selecciona una fecha en el calendario.</td></tr>`;
-                return;
-            }
+            if(!dateInput) return;
 
-            const [tYear, tMonth, tDay] = dateInput.split('-').map(Number);
+            // ANIMACIÓN VISUAL DE CARGA PARA EL BOTÓN
+            tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="padding: 40px;"><div class="loader" style="width:24px; height:24px; margin:0 auto; border-width:2px;"></div><p style="color:var(--primary); font-weight:600; margin-top:8px;">Calculando ventas...</p></td></tr>`;
 
-            // Traductor invencible de fechas de Excel a Javascript
-            const parseDateFlexible = (dateStr) => {
-                if (!dateStr) return null;
-                let clean = dateStr.toString().split(',')[0].split(' ')[0].trim();
-                let parts = clean.includes('/') ? clean.split('/') : clean.split('-');
-                
-                if (parts.length === 3) {
-                    let p1 = parseInt(parts[0], 10);
-                    let p2 = parseInt(parts[1], 10);
-                    let p3 = parseInt(parts[2], 10);
+            // Timeout súper cortico para que se alcance a ver la animación y el usuario sepa que el botón sí se presionó
+            setTimeout(() => {
+                const [tYear, tMonth, tDay] = dateInput.split('-').map(Number);
+
+                // Traductor universal de fechas
+                const parseDateFlexible = (dateStr) => {
+                    if (!dateStr) return null;
+                    let clean = dateStr.toString().toLowerCase().trim();
                     
-                    if (parts[0].length === 4) return { y: p1, m: p2, d: p3 }; // Formato YYYY-MM-DD
-                    return { y: p3, m: p2, d: p1 }; // Formato Colombiano DD/MM/YYYY
-                }
-                return null;
-            };
+                    // Si viene como fecha ISO limpia
+                    if(clean.includes('t') || clean.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                        let d = new Date(clean);
+                        if(!isNaN(d)) return { y: d.getFullYear(), m: d.getMonth() + 1, d: d.getDate() };
+                    }
+                    
+                    // Quitar la hora si la trae de Excel
+                    clean = clean.split(',')[0].split(' ')[0];
+                    let parts = clean.includes('/') ? clean.split('/') : clean.split('-');
+                    
+                    if (parts.length === 3) {
+                        let p1 = parseInt(parts[0], 10);
+                        let p2 = parseInt(parts[1], 10);
+                        let p3 = parseInt(parts[2], 10);
+                        
+                        if (parts[2] && parts[2].toString().length === 4) return { y: p3, m: p2, d: p1 }; 
+                        if (parts[0] && parts[0].toString().length === 4) return { y: p1, m: p2, d: p3 };
+                        return { y: 2000 + p3, m: p2, d: p1 }; 
+                    }
+                    return null;
+                };
 
-            const ventasDia = dbOrders.filter(order => {
-                const d = parseDateFlexible(order.fecha);
-                if (d) {
-                    // Verificamos ambas combinaciones por si Excel invierte día y mes (muy común)
-                    return (d.y === tYear && d.m === tMonth && d.d === tDay) || 
-                           (d.y === tYear && d.d === tMonth && d.m === tDay);
-                }
-                return false;
-            });
+                const ventasDia = dbOrders.filter(order => {
+                    const d = parseDateFlexible(order.fecha);
+                    if (d) {
+                        return (d.y === tYear && d.m === tMonth && d.d === tDay) || 
+                               (d.y === tYear && d.d === tMonth && d.m === tDay);
+                    }
+                    return false;
+                });
 
-            let totalIngresos = 0;
-            let totalProductos = 0;
-            const consolidado = {};
+                let totalIngresos = 0;
+                let totalProductos = 0;
+                const consolidado = {};
 
-            ventasDia.forEach(order => {
-                let prodName = (order.producto || 'Producto genérico').trim();
-                let cant = parseInt(order.cantidad) || 1;
+                ventasDia.forEach(order => {
+                    let prodName = (order.producto || 'Producto Genérico').trim();
+                    let cant = parseInt(order.cantidad) || 1;
+                    let pUnit = parseFloat(order.precioUnitario ? order.precioUnitario.toString().replace(/\D/g,'') : 0) || 0;
+                    let pTotal = cant * pUnit;
+
+                    totalIngresos += pTotal;
+                    totalProductos += cant;
+
+                    if(consolidado[prodName]) {
+                        consolidado[prodName].cant += cant;
+                        consolidado[prodName].ingreso += pTotal;
+                    } else {
+                        consolidado[prodName] = { cant: cant, ingreso: pTotal };
+                    }
+                });
+
+                document.getElementById('kpi-liq-total').textContent = formatCurrency(totalIngresos);
+                document.getElementById('kpi-liq-cant').textContent = totalProductos;
+
+                tableBodyLiq.innerHTML = '';
                 
-                let pUnit = parseFloat(order.precioUnitario ? order.precioUnitario.toString().replace(/\D/g,'') : 0) || 0;
-                let pTotal = cant * pUnit;
-
-                totalIngresos += pTotal;
-                totalProductos += cant;
-
-                if(consolidado[prodName]) {
-                    consolidado[prodName].cant += cant;
-                    consolidado[prodName].ingreso += pTotal;
-                } else {
-                    consolidado[prodName] = { cant: cant, ingreso: pTotal };
+                if(Object.keys(consolidado).length === 0) {
+                    tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #94a3b8; font-weight:600; padding: 40px;">No hay ventas registradas para el día seleccionado.</td></tr>`;
+                    return;
                 }
-            });
 
-            document.getElementById('kpi-liq-total').textContent = formatCurrency(totalIngresos);
-            document.getElementById('kpi-liq-cant').textContent = totalProductos;
-
-            tableBodyLiq.innerHTML = '';
-            
-            if(Object.keys(consolidado).length === 0) {
-                tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">No hay ventas registradas para el día seleccionado.</td></tr>`;
-                return;
-            }
-
-            for (const [prod, datos] of Object.entries(consolidado)) {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="font-weight: 700; color: #0f172a;">${prod}</td>
-                    <td class="text-center"><span class="td-cant">${datos.cant}</span></td>
-                    <td class="td-price">${formatCurrency(datos.ingreso)}</td>
+                for (const [prod, datos] of Object.entries(consolidado)) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight: 700; color: #0f172a;">${prod}</td>
+                        <td class="text-center"><span class="td-cant">${datos.cant}</span></td>
+                        <td class="td-price">${formatCurrency(datos.ingreso)}</td>
+                    `;
+                    tableBodyLiq.appendChild(tr);
+                }
+                
+                // Fila Verde Espectacular de Total
+                const trTotal = document.createElement('tr');
+                trTotal.style.backgroundColor = '#f1f5f9';
+                trTotal.innerHTML = `
+                    <td style="font-weight: 800; color: #0f172a; text-align: right; text-transform: uppercase;">Total Día:</td>
+                    <td class="text-center"><span class="td-cant" style="background: var(--primary); color: white;">${totalProductos}</span></td>
+                    <td class="td-price" style="font-size: 16px; font-weight: 800; color: #059669;">${formatCurrency(totalIngresos)}</td>
                 `;
-                tableBodyLiq.appendChild(tr);
-            }
-            
-            // Fila Verde de Total General
-            const trTotal = document.createElement('tr');
-            trTotal.style.backgroundColor = '#f1f5f9';
-            trTotal.innerHTML = `
-                <td style="font-weight: 800; color: #0f172a; text-align: right; text-transform: uppercase;">Total Día:</td>
-                <td class="text-center"><span class="td-cant" style="background: var(--primary); color: white;">${totalProductos}</span></td>
-                <td class="td-price" style="font-size: 16px; font-weight: 800; color: #059669;">${formatCurrency(totalIngresos)}</td>
-            `;
-            tableBodyLiq.appendChild(trTotal);
+                tableBodyLiq.appendChild(trTotal);
+                
+            }, 350); // Fin del timeout
         }
 
         // Lógicas Operativas de WhatsApp
@@ -570,7 +621,7 @@
             const msgDomi = `🛵 *NUEVO DOMICILIO STORE TRENDS*\n\n*Cliente:* ${order.cliente}\n*Celular:* ${order.telefono}\n*Ciudad:* ${order.ciudad}\n*Dirección:* ${order.direccion}\n*Pedido:* ${order.id}\n*Artículo:* ${order.producto} (Cant: ${order.cantidad})\n\nPor favor confirmar recibido.`;
             window.open(`https://wa.me/${NUMERO_DOMICILIARIO}?text=${encodeURIComponent(msgDomi)}`, '_blank');
             dbOrders[index].guia = "MOTO-" + orderId;
-            renderPedidos(); 
+            renderTable(); 
         }
 
         function solicitarGuiaReal(orderId, index) {
@@ -596,7 +647,7 @@
                 const guia = document.getElementById('modal-input-guia').value;
                 if(guia.trim() !== "") {
                     dbOrders[index].guia = guia.trim();
-                    renderPedidos();
+                    renderTable();
                     closeModal();
                 } else {
                     document.getElementById('modal-input-guia').style.borderColor = "red";
@@ -624,9 +675,9 @@
             document.getElementById('modal-input-guia').style.borderColor = "#e2e8f0";
         }
 
-        // Seleccionar la fecha de hoy por defecto al cargar la página
+        // Seleccionar la fecha de hoy por defecto
         document.getElementById('liq-date').valueAsDate = new Date();
-        window.onload = cargarDatosDesdeGoogle;
+        window.onload = cargarPedidosDesdeGoogle;
     </script>
 </body>
 </html>
