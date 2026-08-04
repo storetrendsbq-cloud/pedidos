@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Trends | Centro de Despachos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --primary: #0d9488;
+            --primary-hover: #0f766e;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body { background-color: var(--bg-body); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+        /* HEADER SUPERIOR */
+        header { height: 70px; background-color: var(--bg-card); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.02); z-index: 10; }
+        
+        .header-left { display: flex; align-items: center; gap: 24px; }
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); box-shadow: 0 2px 4px rgba(13,148,136,0.2); }
+        .logo-text { font-size: 22px; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; }
+        .page-title { font-size: 16px; font-weight: 600; color: var(--text-muted); border-left: 2px solid var(--border-color); padding-left: 24px; }
+
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .user-profile { display: flex; align-items: center; gap: 12px; background: #f1f5f9; padding: 6px 16px 6px 6px; border-radius: 30px;}
+        .avatar { width: 32px; height: 32px; border-radius: 50%; background-color: #0f172a; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px;}
+        .user-info h4 { font-size: 13px; margin: 0; color: #0f172a;}
+        
+        .btn-sync { background-color: white; border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text-main); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .btn-sync:hover { background-color: #f1f5f9; border-color: #cbd5e1; }
+
+        /* CONTENIDO PRINCIPAL */
+        main { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; padding: 24px 32px; }
+        
+        /* KPIs */
+        .kpi-grid { display: flex; gap: 24px; margin-bottom: 24px; flex-shrink: 0;}
+        .kpi-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px 24px; flex: 1; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .kpi-info h3 { font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .kpi-info p { font-size: 28px; font-weight: 800; color: #0f172a; line-height: 1; }
+        .kpi-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .icon-orange { background-color: #ffedd5; color: #ea580c; }
+        .icon-green { background-color: #dcfce7; color: #16a34a; }
+        .status-dot { display: inline-block; width: 10px; height: 10px; background-color: #22c55e; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 0 3px #dcfce7; }
+
+        /* TABLA (Ancho Completo) */
+        .table-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
+        .table-header { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; background: #f8fafc; }
+        .table-header h2 { font-size: 15px; font-weight: 700; color: #0f172a; }
+        
+        .table-container { width: 100%; overflow: auto; flex-grow: 1; }
+        .table-container::-webkit-scrollbar { width: 8px; height: 8px; }
+        .table-container::-webkit-scrollbar-track { background: #f1f5f9; }
+        .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .table-container::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        table { width: 100%; border-collapse: collapse; min-width: 1400px; }
+        th, td { padding: 12px 16px; text-align: left; font-size: 12px; border-bottom: 1px solid var(--border-color); }
+        th { position: sticky; top: 0; background-color: #f8fafc; font-weight: 700; color: var(--text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; white-space: nowrap; z-index: 2; box-shadow: 0 1px 0 var(--border-color); }
+        tbody tr:hover { background-color: #f1f5f9; transition: background 0.2s; }
+
+        /* Celdas con Tooltip nativo (title) */
+        .truncate-cell { max-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }
+        .td-id { font-weight: 700; color: var(--primary); width: 60px; }
+        .td-cliente { font-weight: 700; color: #0f172a; }
+        .td-contact i { color: #94a3b8; width: 14px; text-align: center; margin-right: 4px; }
+        .td-cant { font-weight: 800; color: #334155; background: #e2e8f0; padding: 2px 8px; border-radius: 4px;}
+        .text-center { text-align: center; }
+
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+        .status-ingresado { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+        .status-despachado { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+
+        .link-soporte { display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: #2563eb; font-weight: 600; text-decoration: none; background: #eff6ff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s; white-space: nowrap; font-size: 11px;}
+        .link-soporte:hover { background: #dbeafe; color: #1d4ed8; }
+        .no-soporte { color: #94a3b8; font-style: italic; font-size: 11px; white-space: nowrap;}
+
+        /* Botones de Acción */
+        .action-container { display: flex; gap: 8px; justify-content: center; }
+        .btn-action { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; white-space: nowrap; }
+        .btn-guia { background-color: #0f172a; color: white; border-color: #0f172a; }
+        .btn-guia:hover { background-color: #1e293b; }
+        .btn-moto { background-color: #dcfce7; border-color: #86efac; color: #16a34a; }
+        .btn-moto:hover { background-color: #bbf7d0; }
+        .btn-notify { background-color: #10b981; border-color: #059669; color: white; width: 100%; font-size: 12px; padding: 8px;}
+        .btn-notify:hover { background-color: #059669; }
+
+        /* Modales */
+        .loader-container { padding: 40px; text-align: center; color: var(--primary); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+        .error-container { padding: 40px; text-align: center; color: #ef4444; font-weight: 500; }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 50; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: white; width: 100%; max-width: 450px; border-radius: 16px; padding: 32px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .modal-icon { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 20px; }
+        .modal-icon.success { background: #dcfce7; color: #16a34a; }
+        .modal-icon.info { background: #e0f2fe; color: #0284c7; }
+        .modal-title { font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 12px; }
+        .modal-text { font-size: 14px; color: #475569; margin-bottom: 24px; line-height: 1.6; white-space: pre-line;}
+        
+        .modal-input-group { margin-bottom: 24px; display: none; }
+        .modal-input { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 15px; font-weight: 600; text-align: center; outline: none; transition: border-color 0.2s;}
+        .modal-input:focus { border-color: var(--primary); }
+
+        .modal-buttons { display: flex; gap: 12px; }
+        .modal-btn { flex: 1; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s; border: none;}
+        .modal-btn-cancel { background: #f1f5f9; color: #475569; display: none;}
+        .modal-btn-cancel:hover { background: #e2e8f0; }
+        .modal-btn-primary { background: var(--primary); color: white; }
+        .modal-btn-primary:hover { background: var(--primary-hover); }
+
+    </style>
+</head>
+<body>
+
+    <!-- Nuevo Header Superior -->
+    <header>
+        <div class="header-left">
+            <div class="logo-container">
+                <img src="https://static.wixstatic.com/media/d0ce54_be38c6945e9b4076a0c659ffaa864d84~mv2.png" alt="Bot-On Logo" class="logo-img" />
+                <div class="logo-text">Bot-On.</div>
+            </div>
+            <div class="page-title">Centro de Despachos</div>
+        </div>
+        <div class="header-right">
+            <button class="btn-sync" onclick="cargarPedidosDesdeGoogle()">
+                <i class="fa-solid fa-arrows-rotate"></i> Sincronizar Datos
+            </button>
+            <div class="user-profile">
+                <div class="avatar">ST</div>
+                <div class="user-info">
+                    <h4>Store Trends</h4>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <h3>Pendientes de Guía / Envío</h3>
+                    <p id="kpi-pendientes">--</p>
+                </div>
+                <div class="kpi-icon icon-orange"><i class="fa-solid fa-box"></i></div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <h3>Estado del Sistema</h3>
+                    <p style="font-size: 18px; margin-top: 8px; display:flex; align-items:center;"><span class="status-dot"></span> Conexión Estable</p>
+                </div>
+                <div class="kpi-icon icon-green"><i class="fa-brands fa-whatsapp"></i></div>
+            </div>
+        </div>
+
+        <div class="table-section">
+            <div class="table-header">
+                <i class="fa-solid fa-list-check" style="color: var(--primary); font-size: 18px;"></i>
+                <h2>Registro de Ventas y Envíos</h2>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Ciudad</th>
+                            <th>Dirección</th>
+                            <th>Producto</th>
+                            <th class="text-center">Cant.</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-center">Soporte Pago</th>
+                            <th class="text-center" style="min-width: 180px;">Acción Logística</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body">
+                        <!-- Datos inyectados vía JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Multiuso -->
+    <div id="custom-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div id="modal-icon" class="modal-icon info"><i class="fa-solid fa-circle-info"></i></div>
+            <h3 id="modal-title" class="modal-title">Título</h3>
+            <p id="modal-message" class="modal-text">Mensaje</p>
+            
+            <div id="modal-input-group" class="modal-input-group">
+                <input type="text" id="modal-input-guia" class="modal-input" placeholder="Ej: 2154887900">
+            </div>
+
+            <div class="modal-buttons">
+                <button id="modal-btn-cancel" class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancelar</button>
+                <button id="modal-btn-primary" class="modal-btn modal-btn-primary" onclick="closeModal()">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // ⚠️ REEMPLAZA ESTA URL POR LA DE TU NUEVA IMPLEMENTACIÓN DE APPS SCRIPT
+        // ==========================================
+        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzR22razQc5qlxFQ-F24B2jDi3LgV8MpBV65DkVhbJb7tnZjidUHp32lDO6dTqdcE_CNQ/exec?action=getPedidos";
+        
+        // Número del domiciliario asignado
+        const NUMERO_DOMICILIARIO = "573054813630"; 
+
+        let dbOrders = [];
+        const tableBody = document.getElementById('orders-table-body');
+        const kpiPendientes = document.getElementById('kpi-pendientes');
+        
+        // Elementos del Modal
+        const modalOverlay = document.getElementById('custom-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalMessage = document.getElementById('modal-message');
+        const modalIcon = document.getElementById('modal-icon');
+        const modalInputGroup = document.getElementById('modal-input-group');
+        const modalInputGuia = document.getElementById('modal-input-guia');
+        const btnCancel = document.getElementById('modal-btn-cancel');
+        const btnPrimary = document.getElementById('modal-btn-primary');
+
+        let guiaActualCallback = null; 
+
+        function renderTable() {
+            tableBody.innerHTML = '';
+            let pendientes = 0;
+
+            if (dbOrders.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="11" class="loader-container" style="color: #94a3b8;">No se encontraron pedidos en la base de datos.</td></tr>`;
+                kpiPendientes.textContent = "0";
+                return;
+            }
+
+            dbOrders.forEach((order, index) => {
+                if(!order.guia) pendientes++;
+
+                const tr = document.createElement('tr');
+                
+                let estadoClass = "status-ingresado";
+                let estadoText = "Ingresado";
+                if(order.guia) {
+                    estadoClass = "status-despachado";
+                    estadoText = "Despachado";
+                }
+
+                tr.innerHTML = `
+                    <td class="td-id" title="${order.id}">${order.id}</td>
+                    <td class="td-cliente truncate-cell" title="${order.cliente}">${order.cliente}</td>
+                    <td class="td-contact" title="${order.telefono}"><i class="fa-solid fa-phone"></i> ${order.telefono}</td>
+                    <td class="td-contact truncate-cell" title="${order.correo}"><i class="fa-solid fa-envelope"></i> ${order.correo}</td>
+                    <td class="truncate-cell" title="${order.ciudad}">${order.ciudad}</td>
+                    <td class="td-contact truncate-cell" title="${order.direccion}"><i class="fa-solid fa-location-dot"></i> ${order.direccion}</td>
+                    <td class="truncate-cell" title="${order.producto}" style="font-weight: 600;">${order.producto}</td>
+                    <td class="text-center" title="Cantidad: ${order.cantidad}"><span class="td-cant">${order.cantidad}</span></td>
+                    
+                    <td class="text-center"><span class="status-badge ${estadoClass}">${estadoText}</span></td>
+                    
+                    <td class="text-center">
+                        ${order.linkPago && order.linkPago.includes('http') ? 
+                          `<a href="${order.linkPago}" target="_blank" class="link-soporte" title="Ver comprobante original">
+                            <i class="fa-solid fa-receipt"></i> Soporte
+                           </a>` 
+                          : `<span class="no-soporte"><i class="fa-solid fa-circle-exclamation"></i> Sin soporte</span>`}
+                    </td>
+                    
+                    <td class="text-center">
+                        <div class="action-container" id="celda-acciones-${order.id}">
+                            ${!order.guia ? `
+                                <button onclick="solicitarGuiaReal('${order.id}', ${index})" class="btn-action btn-guia" title="Generar guía con Transportadora">
+                                    <i class="fa-solid fa-truck-fast"></i> Guía Nac.
+                                </button>
+                                <button onclick="gestionarMoto('${order.id}', ${index})" class="btn-action btn-moto" title="Enviar datos a la Moto por WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i> Moto Domi
+                                </button>
+                            ` : `
+                                <button onclick="notificarCliente('${order.id}', ${index})" class="btn-action btn-notify" title="Avisar al cliente por WhatsApp">
+                                    <i class="fa-brands fa-whatsapp"></i> Notificar Cliente
+                                </button>
+                            `}
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            kpiPendientes.textContent = pendientes;
+        }
+
+        // LÓGICA 1: ENVÍO LOCAL (MOTO)
+        function gestionarMoto(orderId, index) {
+            const order = dbOrders[index];
+            const msgDomi = `🛵 *NUEVO DOMICILIO STORE TRENDS*\n\n*Cliente:* ${order.cliente}\n*Celular:* ${order.telefono}\n*Ciudad:* ${order.ciudad}\n*Dirección:* ${order.direccion}\n*Pedido:* ${order.id}\n*Artículo:* ${order.producto} (Cant: ${order.cantidad})\n\nPor favor confirmar recibido para ir a recoger.`;
+            
+            window.open(`https://wa.me/${NUMERO_DOMICILIARIO}?text=${encodeURIComponent(msgDomi)}`, '_blank');
+            
+            showInfoModal('¡Datos enviados al Domiciliario!', `Se abrió WhatsApp para enviar los datos a la moto.\n\nEl sistema ahora habilitará el botón verde para notificar al cliente.`);
+            
+            dbOrders[index].guia = "MOTO-" + orderId;
+            renderTable(); 
+        }
+
+        // LÓGICA 2: GUÍA NACIONAL
+        function solicitarGuiaReal(orderId, index) {
+            const order = dbOrders[index];
+            
+            const datosParaTransportadora = `Cliente: ${order.cliente}\nCelular: ${order.telefono}\nCiudad: ${order.ciudad}\nDirección: ${order.direccion}\nPaquete: ${order.cantidad} x ${order.producto}`;
+            
+            const textarea = document.createElement("textarea");
+            textarea.value = datosParaTransportadora;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+
+            showInputModal(
+                'Datos Copiados', 
+                `He copiado los datos de **${order.cliente}** a tu portapapeles.\n\nVe a la página de tu transportadora (Envía, Coordinadora, etc), pega los datos, y cuando te den el número de guía, escríbelo aquí abajo para guardarlo:`,
+                (numeroGuia) => {
+                    if(numeroGuia && numeroGuia.trim() !== "") {
+                        dbOrders[index].guia = numeroGuia.trim();
+                        renderTable();
+                    }
+                }
+            );
+        }
+
+        // LÓGICA 3: NOTIFICAR AL CLIENTE
+        function notificarCliente(orderId, index) {
+            const order = dbOrders[index];
+            let mensaje = `¡Hola ${order.cliente}! 👋\n\nTe confirmamos que tu pedido de Store Trends *${order.id}* ya fue despachado. 📦\n\n`;
+            
+            if (order.guia && order.guia.startsWith('MOTO')) {
+                mensaje += `🛵 Tu pedido va en camino con nuestro domiciliario a la dirección: ${order.direccion}.\n\n¡Atento a tu celular para recibirlo!`;
+            } else {
+                mensaje += `🚚 Tu pedido fue enviado por transportadora nacional.\n*Número de Guía:* ${order.guia}\n\nPuedes rastrearlo en la página oficial de la transportadora.`;
+            }
+            
+            let telefono = order.telefono.toString().replace(/\D/g, '');
+            if (telefono.length === 10) { telefono = '57' + telefono; }
+
+            window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, '_blank');
+        }
+
+        // CARGAR DATOS DESDE GOOGLE
+        async function cargarPedidosDesdeGoogle() {
+            tableBody.innerHTML = `<tr><td colspan="11" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando con Excel...</p></td></tr>`;
+            
+            if (GOOGLE_WEB_APP_URL.includes("AQUÍ_VA_TU_URL")) {
+                 tableBody.innerHTML = `<tr><td colspan="11" class="error-container"><i class="fa-solid fa-triangle-exclamation" style="font-size: 24px; margin-bottom: 8px; display:block;"></i> Falta configurar la URL.<br><span style="font-size: 12px; font-weight: normal; margin-top: 4px; display: block; color: #64748b;">Edita el archivo index.html y pega tu URL de Google Apps Script en la línea 257.</span></td></tr>`;
+                 return;
+            }
+
+            try {
+                const respuesta = await fetch(GOOGLE_WEB_APP_URL, { redirect: "follow" });
+                if (!respuesta.ok) throw new Error(`Error HTTP: ${respuesta.status}`);
+
+                const datosExcel = await respuesta.json();
+                
+                dbOrders = datosExcel.filter(fila => fila['Número de Pedido'] || fila['# Pedido']).reverse().map((fila, i) => {
+                    return {
+                        id: fila['Número de Pedido'] || fila['# Pedido'] || (i+1),
+                        cliente: fila['Cliente'] || fila['Nombre'] || 'Sin nombre',
+                        telefono: fila['Teléfono'] || fila['Telefono'] || fila['Celular'] || 'Sin teléfono',
+                        correo: fila['Email'] || fila['Correo'] || 'Sin correo',
+                        ciudad: fila['Ciudad'] || '',
+                        direccion: fila['Dirección'] || fila['Direccion'] || '',
+                        producto: fila['Producto'] || fila['Referencia'] || 'Producto',
+                        cantidad: fila['Cantidad'] || '1',
+                        linkPago: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
+                        guia: fila['Guia'] || fila['Guía'] || null
+                    };
+                });
+                
+                renderTable();
+            } catch (error) {
+                tableBody.innerHTML = `<tr><td colspan="11" class="error-container"><i class="fa-solid fa-triangle-exclamation" style="font-size: 24px; margin-bottom: 8px; display:block;"></i> Error de Conexión.<br><span style="font-size: 12px; font-weight: normal; margin-top: 4px; display: block; color: #64748b;">Verifica tu URL de Google Apps Script.</span></td></tr>`;
+                console.error(error);
+            }
+        }
+
+        // CONTROL DE MODALES
+        function showInfoModal(title, message) {
+            modalTitle.textContent = title;
+            modalMessage.innerHTML = message.replace(/\n/g, '<br>');
+            modalIcon.className = 'modal-icon success';
+            modalIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+            
+            modalInputGroup.style.display = 'none';
+            btnCancel.style.display = 'none';
+            
+            btnPrimary.textContent = "Entendido";
+            btnPrimary.onclick = closeModal;
+            
+            modalOverlay.classList.add('active');
+        }
+
+        function showInputModal(title, message, callback) {
+            modalTitle.textContent = title;
+            modalMessage.innerHTML = message.replace(/\n/g, '<br>');
+            modalIcon.className = 'modal-icon info';
+            modalIcon.innerHTML = '<i class="fa-solid fa-paste"></i>';
+            
+            modalInputGroup.style.display = 'block';
+            modalInputGuia.value = "";
+            btnCancel.style.display = 'block';
+            
+            btnPrimary.textContent = "Guardar Guía";
+            btnPrimary.onclick = () => {
+                if(modalInputGuia.value.trim() !== "") {
+                    callback(modalInputGuia.value);
+                    closeModal();
+                } else {
+                    modalInputGuia.style.borderColor = "red";
+                }
+            };
+            
+            modalOverlay.classList.add('active');
+            modalInputGuia.focus();
+        }
+        
+        function closeModal() { 
+            modalOverlay.classList.remove('active'); 
+            modalInputGuia.style.borderColor = "#e2e8f0";
+        }
+
+        window.onload = cargarPedidosDesdeGoogle;
+    </script>
+</body>
+</html>
