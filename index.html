@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store Trends | Dashboard</title>
+    <title>Store Trends | Centro de Despachos</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -160,7 +160,7 @@
                         <h3>Pendientes de Guía / Envío</h3>
                         <p id="kpi-pendientes">--</p>
                     </div>
-                    <div class="kpi-icon icon-orange"><i class="fa-solid fa-clock"></i></div>
+                    <div class="kpi-icon icon-orange"><i class="fa-solid fa-box"></i></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-info">
@@ -197,7 +197,7 @@
                             </tr>
                         </thead>
                         <tbody id="orders-table-body">
-                            <!-- Datos Pedidos -->
+                            <!-- Datos inyectados vía JS -->
                         </tbody>
                     </table>
                 </div>
@@ -261,7 +261,8 @@
                         <h2>Liquidación Consolidada</h2>
                     </div>
                     <div class="date-picker-container">
-                        <input type="date" id="liq-date" class="date-input">
+                        <!-- El input ahora calcula los totales apenas seleccionas un día -->
+                        <input type="date" id="liq-date" class="date-input" onchange="calcularLiquidacion()">
                         <button class="btn-calc" onclick="calcularLiquidacion()">Calcular Totales</button>
                     </div>
                 </div>
@@ -275,7 +276,7 @@
                             </tr>
                         </thead>
                         <tbody id="liq-table-body">
-                            <tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">Selecciona una fecha y haz clic en Calcular Totales.</td></tr>
+                            <tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">Selecciona una fecha en el calendario.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -313,6 +314,7 @@
         let dbOrders = [];
         let dbPQRs = [];
         
+        // Función vital para formatear precios sin que el sistema colapse
         const formatCurrency = (val) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(val);
 
         // Control de Pestañas
@@ -323,23 +325,12 @@
             document.getElementById('tab-' + tabId).classList.add('active');
         }
 
-        // Buscador Inteligente de Columnas (No importa si cambias el nombre en Excel)
-        function getCol(row, possibleNames) {
-            const keys = Object.keys(row);
-            for (let name of possibleNames) {
-                const foundKey = keys.find(k => k.toLowerCase().trim() === name.toLowerCase().trim());
-                if (foundKey) return row[foundKey] || "";
-            }
-            return "";
-        }
-
-        // CARGAR DATOS GENERALES
+        // CARGAR DATOS (Ventas y PQR)
         async function cargarDatosDesdeGoogle() {
             document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="12" class="loader-container">Cargando Pedidos...</td></tr>`;
             document.getElementById('pqr-table-body').innerHTML = `<tr><td colspan="8" class="loader-container">Cargando PQR...</td></tr>`;
             
             try {
-                // Descargamos ambas hojas en paralelo para mayor rapidez
                 const [resPedidos, resPQR] = await Promise.all([
                     fetch(GOOGLE_WEB_APP_URL).catch(()=>null),
                     fetch(GOOGLE_URL_PQR).catch(()=>null)
@@ -347,38 +338,40 @@
 
                 if (resPedidos && resPedidos.ok) {
                     const datosExcel = await resPedidos.json();
-                    dbOrders = datosExcel.filter(fila => getCol(fila, ['Número de Pedido', '# Pedido', 'ID', 'Consecutivo']) !== "").reverse().map((fila, i) => {
+                    
+                    // Buscador inteligente de columnas
+                    dbOrders = datosExcel.filter(fila => fila['Número de Pedido'] || fila['# Pedido'] || fila['Consecutivo']).reverse().map((fila, i) => {
                         return {
-                            id: getCol(fila, ['Número de Pedido', '# Pedido', 'ID']) || (i+1),
-                            cliente: getCol(fila, ['Nombre del Cliente', 'Cliente', 'Nombre', 'Nombre completo']),
-                            telefono: getCol(fila, ['Teléfono', 'Telefono', 'Celular']),
-                            correo: getCol(fila, ['Correo', 'Email', 'Correo electrónico']),
-                            ciudad: getCol(fila, ['Ciudad']),
-                            direccion: getCol(fila, ['Dirección', 'Direccion']),
-                            producto: getCol(fila, ['Nombre del Producto', 'Producto', 'Referencia']),
-                            cantidad: getCol(fila, ['Cantidad', 'Cant.', 'Cant']),
-                            precioUnitario: getCol(fila, ['Precio Unitario', 'Precio']),
-                            precioTotal: getCol(fila, ['Precio Total', 'Total', 'Subtotal']),
-                            fecha: getCol(fila, ['Fecha', 'Fecha Compra', 'Fecha de Compra']),
+                            id: fila['Número de Pedido'] || fila['# Pedido'] || fila['Consecutivo'] || (i+1),
+                            cliente: fila['Cliente'] || fila['Nombre completo'] || fila['Nombre del Cliente'] || 'Sin nombre',
+                            telefono: fila['Teléfono'] || fila['Telefono'] || fila['Celular'] || 'Sin teléfono',
+                            correo: fila['Email'] || fila['Correo'] || fila['Correo electrónico'] || 'Sin correo',
+                            ciudad: fila['Ciudad'] || '',
+                            direccion: fila['Dirección'] || fila['Direccion'] || '',
+                            producto: fila['Producto'] || fila['Nombre del Producto'] || fila['Referencia'] || 'Producto',
+                            cantidad: fila['Cantidad'] || fila['Cant.'] || '1',
+                            precioUnitario: fila['Precio Unitario'] || fila['Precio'] || '0',
+                            fecha: fila['Fecha'] || fila['Fecha Compra'] || fila['Fecha de Compra'] || '',
                             linkPago: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
-                            guia: getCol(fila, ['Guia', 'Guía'])
+                            guia: fila['Guia'] || fila['Guía'] ? (fila['Guia'] || fila['Guía']) : null
                         };
                     });
                     renderPedidos();
+                    calcularLiquidacion(); // Calculamos la liquidación de hoy automáticamente
                 }
 
                 if (resPQR && resPQR.ok) {
                     const datosPQR = await resPQR.json();
-                    dbPQRs = datosPQR.filter(fila => getCol(fila, ['Número Pedido', 'ID Pedido', 'Pedido']) !== "").reverse().map(fila => {
+                    dbPQRs = datosPQR.filter(fila => fila['Número Pedido'] || fila['ID Pedido']).reverse().map(fila => {
                         return {
-                            idPedido: getCol(fila, ['Número Pedido', 'ID Pedido', 'Pedido']),
-                            fecha: getCol(fila, ['Fecha de registro de novedad', 'Fecha', 'Fecha Registro']),
-                            novedad: getCol(fila, ['Novedad', 'Tipo Novedad']),
-                            cliente: getCol(fila, ['Cliente', 'Nombre', 'Nombre Cliente']),
-                            telefono: getCol(fila, ['Teléfono', 'Telefono', 'Celular']),
-                            descripcion: getCol(fila, ['Descripcion (Resumida)', 'Descripcion', 'Detalle']),
-                            evidencia: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
-                            estado: getCol(fila, ['Estado (Resuelto / Pendiente)', 'Estado'])
+                            idPedido: fila['Número Pedido'] || fila['ID Pedido'],
+                            fecha: fila['Fecha de registro de novedad'] || fila['Fecha'] || '',
+                            novedad: fila['Novedad'] || fila['Tipo Novedad'] || '',
+                            cliente: fila['Cliente'] || fila['Nombre'] || '',
+                            telefono: fila['Teléfono'] || fila['Telefono'] || '',
+                            descripcion: fila['Descripcion (Resumida)'] || fila['Descripcion'] || '',
+                            evidencia: fila['Foto evidencia (Drive Real)'] || fila['Foto evidencia'] || Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
+                            estado: fila['Estado (Resuelto / Pendiente)'] || fila['Estado'] || ''
                         };
                     });
                     renderPQR();
@@ -390,6 +383,7 @@
             }
         }
 
+        // RENDERIZAR TABLA DE VENTAS
         function renderPedidos() {
             const tbody = document.getElementById('orders-table-body');
             tbody.innerHTML = '';
@@ -412,7 +406,7 @@
                     estadoText = "Despachado";
                 }
 
-                let precioNum = parseFloat(order.precioUnitario.toString().replace(/\D/g,'')) || 0;
+                let precioLimpio = parseFloat(order.precioUnitario.toString().replace(/\D/g, '')) || 0;
 
                 tr.innerHTML = `
                     <td class="td-id" title="${order.id}">${order.id}</td>
@@ -422,8 +416,8 @@
                     <td class="truncate-cell" title="${order.ciudad}">${order.ciudad}</td>
                     <td class="td-contact truncate-cell" title="${order.direccion}"><i class="fa-solid fa-location-dot"></i> ${order.direccion}</td>
                     <td class="truncate-cell" title="${order.producto}" style="font-weight: 600;">${order.producto}</td>
-                    <td class="text-center"><span class="td-cant">${order.cantidad || 1}</span></td>
-                    <td class="td-price">${formatCurrency(precioNum)}</td>
+                    <td class="text-center" title="Cantidad: ${order.cantidad}"><span class="td-cant">${order.cantidad}</span></td>
+                    <td class="td-price">${formatCurrency(precioLimpio)}</td>
                     <td class="text-center"><span class="status-badge ${estadoClass}">${estadoText}</span></td>
                     <td class="text-center">
                         ${order.linkPago ? 
@@ -446,6 +440,7 @@
             document.getElementById('kpi-pendientes').textContent = pendientes;
         }
 
+        // RENDERIZAR TABLA PQR
         function renderPQR() {
             const tbody = document.getElementById('pqr-table-body');
             tbody.innerHTML = '';
@@ -456,7 +451,6 @@
 
             dbPQRs.forEach(pqr => {
                 const tr = document.createElement('tr');
-                // Asignamos color verde solo si dice "resuelto" en cualquier formato
                 let estadoLimpio = pqr.estado ? pqr.estado.toString().toLowerCase() : "";
                 let estadoClass = estadoLimpio.includes('resuelto') ? 'status-despachado' : 'status-pendiente';
                 
@@ -478,49 +472,41 @@
             });
         }
 
+        // LÓGICA DE LIQUIDACIÓN DIARIA
         function calcularLiquidacion() {
             const tableBodyLiq = document.getElementById('liq-table-body');
-            const dateInput = document.getElementById('liq-date').value;
+            const dateInput = document.getElementById('liq-date').value; // Formato: YYYY-MM-DD
             
             if(!dateInput) {
-                tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #ef4444; font-weight:600; padding: 40px;">Por favor, selecciona una fecha en el calendario.</td></tr>`;
+                tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #ef4444; font-weight:600; padding: 40px;">Selecciona una fecha en el calendario.</td></tr>`;
                 return;
             }
 
-            // El input date entrega formato YYYY-MM-DD
             const [tYear, tMonth, tDay] = dateInput.split('-').map(Number);
 
-            // Parser invencible de fechas de Excel
-            const parseExcelDate = (dateStr) => {
+            // Traductor invencible de fechas de Excel a Javascript
+            const parseDateFlexible = (dateStr) => {
                 if (!dateStr) return null;
-                // Nos quedamos solo con la fecha sin la hora (Ej: "3/8/2026, 8:52:14 a. m." -> "3/8/2026")
                 let clean = dateStr.toString().split(',')[0].split(' ')[0].trim();
+                let parts = clean.includes('/') ? clean.split('/') : clean.split('-');
                 
-                // Reconoce separadores / o -
-                let parts = clean.split('/');
-                if(parts.length !== 3) parts = clean.split('-');
-                
-                if(parts.length === 3) {
-                    let d = parseInt(parts[0], 10);
-                    let m = parseInt(parts[1], 10);
-                    let y = parseInt(parts[2], 10);
+                if (parts.length === 3) {
+                    let p1 = parseInt(parts[0], 10);
+                    let p2 = parseInt(parts[1], 10);
+                    let p3 = parseInt(parts[2], 10);
                     
-                    // Si el año está primero en el texto
-                    if (parts[0].length === 4) {
-                        y = parseInt(parts[0], 10);
-                        m = parseInt(parts[1], 10);
-                        d = parseInt(parts[2], 10);
-                    }
-                    return { y, m, d };
+                    if (parts[0].length === 4) return { y: p1, m: p2, d: p3 }; // Formato YYYY-MM-DD
+                    return { y: p3, m: p2, d: p1 }; // Formato Colombiano DD/MM/YYYY
                 }
                 return null;
             };
 
-            // Filtramos las ventas donde el Año, Mes y Día coincidan exactamente
             const ventasDia = dbOrders.filter(order => {
-                const excelDate = parseExcelDate(order.fecha);
-                if(excelDate) {
-                    return excelDate.y === tYear && excelDate.m === tMonth && excelDate.d === tDay;
+                const d = parseDateFlexible(order.fecha);
+                if (d) {
+                    // Verificamos ambas combinaciones por si Excel invierte día y mes (muy común)
+                    return (d.y === tYear && d.m === tMonth && d.d === tDay) || 
+                           (d.y === tYear && d.d === tMonth && d.m === tDay);
                 }
                 return false;
             });
@@ -530,20 +516,15 @@
             const consolidado = {};
 
             ventasDia.forEach(order => {
-                let prodName = (order.producto || 'Producto sin nombre').trim();
+                let prodName = (order.producto || 'Producto genérico').trim();
                 let cant = parseInt(order.cantidad) || 1;
                 
-                // Buscamos el total. Si falla, multiplicamos precio unitario x cantidad
-                let pTotal = parseFloat(order.precioTotal ? order.precioTotal.toString().replace(/\D/g,'') : 0);
-                if (!pTotal || isNaN(pTotal) || pTotal === 0) {
-                    let pUnit = parseFloat(order.precioUnitario ? order.precioUnitario.toString().replace(/\D/g,'') : 0) || 0;
-                    pTotal = cant * pUnit;
-                }
+                let pUnit = parseFloat(order.precioUnitario ? order.precioUnitario.toString().replace(/\D/g,'') : 0) || 0;
+                let pTotal = cant * pUnit;
 
                 totalIngresos += pTotal;
                 totalProductos += cant;
 
-                // Agrupamos por nombre de producto
                 if(consolidado[prodName]) {
                     consolidado[prodName].cant += cant;
                     consolidado[prodName].ingreso += pTotal;
@@ -552,12 +533,11 @@
                 }
             });
 
-            // Actualizar KPIs de Liquidación
             document.getElementById('kpi-liq-total').textContent = formatCurrency(totalIngresos);
             document.getElementById('kpi-liq-cant').textContent = totalProductos;
 
-            // Renderizar la tabla de liquidación
             tableBodyLiq.innerHTML = '';
+            
             if(Object.keys(consolidado).length === 0) {
                 tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">No hay ventas registradas para el día seleccionado.</td></tr>`;
                 return;
@@ -584,7 +564,7 @@
             tableBodyLiq.appendChild(trTotal);
         }
 
-        // Lógicas Operativas
+        // Lógicas Operativas de WhatsApp
         function gestionarMoto(orderId, index) {
             const order = dbOrders[index];
             const msgDomi = `🛵 *NUEVO DOMICILIO STORE TRENDS*\n\n*Cliente:* ${order.cliente}\n*Celular:* ${order.telefono}\n*Ciudad:* ${order.ciudad}\n*Dirección:* ${order.direccion}\n*Pedido:* ${order.id}\n*Artículo:* ${order.producto} (Cant: ${order.cantidad})\n\nPor favor confirmar recibido.`;
@@ -617,7 +597,7 @@
                 if(guia.trim() !== "") {
                     dbOrders[index].guia = guia.trim();
                     renderPedidos();
-                    document.getElementById('custom-modal').classList.remove('active');
+                    closeModal();
                 } else {
                     document.getElementById('modal-input-guia').style.borderColor = "red";
                 }
@@ -644,7 +624,7 @@
             document.getElementById('modal-input-guia').style.borderColor = "#e2e8f0";
         }
 
-        // Seleccionar la fecha de hoy por defecto al cargar
+        // Seleccionar la fecha de hoy por defecto al cargar la página
         document.getElementById('liq-date').valueAsDate = new Date();
         window.onload = cargarDatosDesdeGoogle;
     </script>
