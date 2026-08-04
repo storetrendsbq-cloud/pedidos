@@ -21,10 +21,11 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg-body); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
+        /* HEADER */
         header { height: 70px; background-color: var(--bg-card); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; flex-shrink: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.02); z-index: 10; }
         .header-left { display: flex; align-items: center; gap: 24px; }
         .logo-container { display: flex; align-items: center; gap: 12px; }
-        .logo-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); box-shadow: 0 2px 4px rgba(13,148,136,0.2); }
+        .logo-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
         .logo-text { font-size: 22px; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; }
         .page-title { font-size: 16px; font-weight: 600; color: var(--text-muted); border-left: 2px solid var(--border-color); padding-left: 24px; }
         
@@ -32,20 +33,19 @@
         .user-profile { display: flex; align-items: center; gap: 12px; background: #f1f5f9; padding: 6px 16px 6px 6px; border-radius: 30px;}
         .avatar { width: 32px; height: 32px; border-radius: 50%; background-color: #0f172a; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px;}
         .user-info h4 { font-size: 13px; margin: 0; color: #0f172a;}
-        
         .btn-sync { background-color: white; border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text-main); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
         .btn-sync:hover { background-color: #f1f5f9; border-color: #cbd5e1; }
 
+        /* CONTENIDO Y PESTAÑAS */
         main { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; padding: 24px 32px; }
-        
         .tabs-container { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); flex-shrink: 0;}
         .tab-btn { padding: 12px 24px; background: none; border: none; font-size: 15px; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; margin-bottom: -2px;}
         .tab-btn:hover { color: var(--primary); }
         .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
-
         .tab-content { display: none; flex-direction: column; flex-grow: 1; overflow: hidden; }
         .tab-content.active { display: flex; }
 
+        /* KPIs */
         .kpi-grid { display: flex; gap: 24px; margin-bottom: 24px; flex-shrink: 0;}
         .kpi-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px 24px; flex: 1; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .kpi-info h3 { font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
@@ -56,39 +56,38 @@
         .icon-blue { background-color: #dbeafe; color: #2563eb; }
         .status-dot { display: inline-block; width: 10px; height: 10px; background-color: #22c55e; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 0 3px #dcfce7; }
 
+        /* TABLAS */
         .table-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
         .table-header { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; background: #f8fafc; }
         .table-header-title { display: flex; align-items: center; gap: 12px; }
         .table-header h2 { font-size: 15px; font-weight: 700; color: #0f172a; }
-        
         .table-container { width: 100%; overflow: auto; flex-grow: 1; }
         .table-container::-webkit-scrollbar { width: 8px; height: 8px; }
         .table-container::-webkit-scrollbar-track { background: #f1f5f9; }
         .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        
-        table { width: 100%; border-collapse: collapse; min-width: 1200px; }
+        table { width: 100%; border-collapse: collapse; min-width: 1400px; }
         #liq-table { min-width: 100%; }
-        th, td { padding: 14px 16px; text-align: left; font-size: 13px; border-bottom: 1px solid var(--border-color); }
+        th, td { padding: 12px 16px; text-align: left; font-size: 12px; border-bottom: 1px solid var(--border-color); }
         th { position: sticky; top: 0; background-color: #f8fafc; font-weight: 700; color: var(--text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; white-space: nowrap; z-index: 2; box-shadow: 0 1px 0 var(--border-color); }
         tbody tr:hover { background-color: #f1f5f9; }
 
-        .truncate-cell { max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }
-        .td-id { font-weight: 800; color: var(--primary); }
+        /* CELDAS Y BADGES */
+        .truncate-cell { max-width: 160px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }
+        .td-id { font-weight: 700; color: var(--primary); width: 60px; }
         .td-cliente { font-weight: 700; color: #0f172a; }
         .td-contact i { color: #94a3b8; width: 14px; text-align: center; margin-right: 4px; }
         .td-cant { font-weight: 800; color: #334155; background: #e2e8f0; padding: 2px 8px; border-radius: 4px;}
         .td-price { font-weight: 600; color: #059669; }
         .text-center { text-align: center; }
-
         .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; }
         .status-ingresado { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
         .status-despachado { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
         .status-pendiente { background-color: #fef08a; color: #b45309; border: 1px solid #fde047; }
-
         .link-soporte { display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: #2563eb; font-weight: 600; text-decoration: none; background: #eff6ff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s; white-space: nowrap; font-size: 11px;}
         .link-soporte:hover { background: #dbeafe; color: #1d4ed8; }
         .no-soporte { color: #94a3b8; font-style: italic; font-size: 11px; white-space: nowrap;}
 
+        /* BOTONES DE ACCIÓN */
         .action-container { display: flex; gap: 8px; justify-content: center; }
         .btn-action { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; white-space: nowrap; }
         .btn-guia { background-color: #0f172a; color: white; border-color: #0f172a; }
@@ -97,18 +96,21 @@
         .btn-moto:hover { background-color: #bbf7d0; }
         .btn-notify { background-color: #10b981; border-color: #059669; color: white; width: 100%; font-size: 12px; padding: 8px;}
         
+        /* HERRAMIENTAS LIQUIDACION */
         .date-picker-container { display: flex; align-items: center; gap: 12px; }
         .date-input { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; font-weight: 600; color: #0f172a; outline: none; }
         .date-input:focus { border-color: var(--primary); }
         .btn-calc { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s;}
         .btn-calc:hover { background: var(--primary-hover); }
 
+        /* MODALES */
         .loader-container { padding: 40px; text-align: center; color: var(--primary); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; font-weight: 600;}
         .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 50; }
         .modal-overlay.active { display: flex; }
         .modal-content { background: white; width: 100%; max-width: 450px; border-radius: 16px; padding: 32px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
         .modal-icon { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 20px; }
         .modal-icon.info { background: #e0f2fe; color: #0284c7; }
+        .modal-icon.success { background: #dcfce7; color: #16a34a; }
         .modal-title { font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 12px; }
         .modal-text { font-size: 14px; color: #475569; margin-bottom: 24px; line-height: 1.6; white-space: pre-line;}
         .modal-input-group { margin-bottom: 24px; display: none; }
@@ -143,12 +145,14 @@
     </header>
 
     <main>
+        <!-- PESTAÑAS -->
         <div class="tabs-container">
             <button class="tab-btn active" onclick="switchTab('pedidos', this)"><i class="fa-solid fa-box"></i> Pedidos</button>
             <button class="tab-btn" onclick="switchTab('pqr', this)"><i class="fa-solid fa-headset"></i> Gestión PQR</button>
             <button class="tab-btn" onclick="switchTab('liq', this)"><i class="fa-solid fa-chart-line"></i> Liquidación Diaria</button>
         </div>
 
+        <!-- TAB 1: PEDIDOS -->
         <div id="tab-pedidos" class="tab-content active">
             <div class="kpi-grid">
                 <div class="kpi-card">
@@ -171,7 +175,7 @@
                 <div class="table-header">
                     <div class="table-header-title">
                         <i class="fa-solid fa-list-check" style="color: var(--primary); font-size: 18px;"></i>
-                        <h2>Registro de Ventas</h2>
+                        <h2>Registro de Ventas y Envíos</h2>
                     </div>
                 </div>
                 <div class="table-container">
@@ -185,7 +189,7 @@
                                 <th>Ciudad</th>
                                 <th>Dirección</th>
                                 <th>Nombre del Producto</th>
-                                <th class="text-center">Cant.</th>
+                                <th class="text-center">Cantidad</th>
                                 <th>Precio Unitario</th>
                                 <th class="text-center">Estado</th>
                                 <th class="text-center">Soporte Pago</th>
@@ -200,6 +204,7 @@
             </div>
         </div>
 
+        <!-- TAB 2: PQR -->
         <div id="tab-pqr" class="tab-content">
             <div class="table-section">
                 <div class="table-header">
@@ -213,8 +218,8 @@
                         <thead>
                             <tr>
                                 <th>ID Pedido</th>
-                                <th>Fecha de Reporte</th>
-                                <th>Novedad</th>
+                                <th>Fecha Novedad</th>
+                                <th>Tipo Novedad</th>
                                 <th>Cliente</th>
                                 <th>Teléfono</th>
                                 <th>Descripción</th>
@@ -230,6 +235,7 @@
             </div>
         </div>
 
+        <!-- TAB 3: LIQUIDACION -->
         <div id="tab-liq" class="tab-content">
             <div class="kpi-grid">
                 <div class="kpi-card">
@@ -256,7 +262,7 @@
                     </div>
                     <div class="date-picker-container">
                         <input type="date" id="liq-date" class="date-input">
-                        <button class="btn-calc" onclick="calcularLiquidacion()">Calcular</button>
+                        <button class="btn-calc" onclick="calcularLiquidacion()">Calcular Totales</button>
                     </div>
                 </div>
                 <div class="table-container">
@@ -269,7 +275,7 @@
                             </tr>
                         </thead>
                         <tbody id="liq-table-body">
-                            <tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">Selecciona una fecha y haz clic en Calcular.</td></tr>
+                            <tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">Selecciona una fecha y haz clic en Calcular Totales.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -277,6 +283,7 @@
         </div>
     </main>
 
+    <!-- Modal Base -->
     <div id="custom-modal" class="modal-overlay">
         <div class="modal-content">
             <div id="modal-icon" class="modal-icon info"><i class="fa-solid fa-paste"></i></div>
@@ -294,9 +301,11 @@
 
     <script>
         // ==========================================
-        // ⚠️ PEGA AQUÍ TU URL DE NUEVA IMPLEMENTACIÓN
+        // ⚠️ PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
         // ==========================================
         const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyJtdneZrgKDEj9bJK9rVxEyi3PUuV106Jt0czn1UsiOrUz3KQvyUl9oHplIqOMtj5J2w/exec?action=getPedidos";
+        
+        // Creamos la URL para PQR automáticamente
         const GOOGLE_URL_PQR = GOOGLE_WEB_APP_URL.replace("getPedidos", "getPQR");
         
         const NUMERO_DOMICILIARIO = "573054813630"; 
@@ -304,17 +313,9 @@
         let dbOrders = [];
         let dbPQRs = [];
         
-        // Elementos UI
-        const tableBodyPedidos = document.getElementById('orders-table-body');
-        const tableBodyPQR = document.getElementById('pqr-table-body');
-        const tableBodyLiq = document.getElementById('liq-table-body');
-        const kpiPendientes = document.getElementById('kpi-pendientes');
-        const modalOverlay = document.getElementById('custom-modal');
-
-        // Formateador de moneda
         const formatCurrency = (val) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(val);
 
-        // Cambiar entre pestañas
+        // Control de Pestañas
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -322,7 +323,7 @@
             document.getElementById('tab-' + tabId).classList.add('active');
         }
 
-        // Buscador inteligente de columnas para evitar que salgan en blanco si cambias el nombre en Excel
+        // Buscador Inteligente de Columnas (No importa si cambias el nombre en Excel)
         function getCol(row, possibleNames) {
             const keys = Object.keys(row);
             for (let name of possibleNames) {
@@ -332,16 +333,16 @@
             return "";
         }
 
-        // Cargar todo desde Google
+        // CARGAR DATOS GENERALES
         async function cargarDatosDesdeGoogle() {
-            tableBodyPedidos.innerHTML = `<tr><td colspan="12" class="loader-container">Cargando Pedidos...</td></tr>`;
-            tableBodyPQR.innerHTML = `<tr><td colspan="8" class="loader-container">Cargando PQR...</td></tr>`;
+            document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="12" class="loader-container">Cargando Pedidos...</td></tr>`;
+            document.getElementById('pqr-table-body').innerHTML = `<tr><td colspan="8" class="loader-container">Cargando PQR...</td></tr>`;
             
             try {
-                // Fetch paralelo para mayor velocidad
+                // Descargamos ambas hojas en paralelo para mayor rapidez
                 const [resPedidos, resPQR] = await Promise.all([
-                    fetch(GOOGLE_WEB_APP_URL, { redirect: "follow" }).catch(()=>null),
-                    fetch(GOOGLE_URL_PQR, { redirect: "follow" }).catch(()=>null)
+                    fetch(GOOGLE_WEB_APP_URL).catch(()=>null),
+                    fetch(GOOGLE_URL_PQR).catch(()=>null)
                 ]);
 
                 if (resPedidos && resPedidos.ok) {
@@ -349,18 +350,18 @@
                     dbOrders = datosExcel.filter(fila => getCol(fila, ['Número de Pedido', '# Pedido', 'ID', 'Consecutivo']) !== "").reverse().map((fila, i) => {
                         return {
                             id: getCol(fila, ['Número de Pedido', '# Pedido', 'ID']) || (i+1),
-                            cliente: getCol(fila, ['Nombre del Cliente', 'Cliente', 'Nombre', 'Nombre completo']) || 'Sin nombre',
-                            telefono: getCol(fila, ['Teléfono', 'Telefono', 'Celular']) || 'Sin teléfono',
-                            correo: getCol(fila, ['Correo', 'Email', 'Correo electrónico']) || 'Sin correo',
-                            ciudad: getCol(fila, ['Ciudad']) || '',
-                            direccion: getCol(fila, ['Dirección', 'Direccion']) || '',
-                            producto: getCol(fila, ['Nombre del Producto', 'Producto', 'Referencia']) || 'Producto',
-                            cantidad: getCol(fila, ['Cantidad', 'Cant.', 'Cant']) || '1',
-                            precioUnitario: getCol(fila, ['Precio Unitario', 'Precio']) || '0',
-                            precioTotal: getCol(fila, ['Precio Total', 'Total', 'Subtotal']) || '0',
-                            fecha: getCol(fila, ['Fecha', 'Fecha Compra']) || '',
-                            linkPago: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')) || null,
-                            guia: getCol(fila, ['Guia', 'Guía']) || null
+                            cliente: getCol(fila, ['Nombre del Cliente', 'Cliente', 'Nombre', 'Nombre completo']),
+                            telefono: getCol(fila, ['Teléfono', 'Telefono', 'Celular']),
+                            correo: getCol(fila, ['Correo', 'Email', 'Correo electrónico']),
+                            ciudad: getCol(fila, ['Ciudad']),
+                            direccion: getCol(fila, ['Dirección', 'Direccion']),
+                            producto: getCol(fila, ['Nombre del Producto', 'Producto', 'Referencia']),
+                            cantidad: getCol(fila, ['Cantidad', 'Cant.', 'Cant']),
+                            precioUnitario: getCol(fila, ['Precio Unitario', 'Precio']),
+                            precioTotal: getCol(fila, ['Precio Total', 'Total', 'Subtotal']),
+                            fecha: getCol(fila, ['Fecha', 'Fecha Compra', 'Fecha de Compra']),
+                            linkPago: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
+                            guia: getCol(fila, ['Guia', 'Guía'])
                         };
                     });
                     renderPedidos();
@@ -368,15 +369,15 @@
 
                 if (resPQR && resPQR.ok) {
                     const datosPQR = await resPQR.json();
-                    dbPQRs = datosPQR.filter(fila => getCol(fila, ['Número Pedido', 'ID Pedido']) !== "").reverse().map(fila => {
+                    dbPQRs = datosPQR.filter(fila => getCol(fila, ['Número Pedido', 'ID Pedido', 'Pedido']) !== "").reverse().map(fila => {
                         return {
                             idPedido: getCol(fila, ['Número Pedido', 'ID Pedido', 'Pedido']),
-                            fecha: getCol(fila, ['Fecha', 'Fecha de registro de novedad', 'Fecha Registro']),
+                            fecha: getCol(fila, ['Fecha de registro de novedad', 'Fecha', 'Fecha Registro']),
                             novedad: getCol(fila, ['Novedad', 'Tipo Novedad']),
                             cliente: getCol(fila, ['Cliente', 'Nombre', 'Nombre Cliente']),
                             telefono: getCol(fila, ['Teléfono', 'Telefono', 'Celular']),
                             descripcion: getCol(fila, ['Descripcion (Resumida)', 'Descripcion', 'Detalle']),
-                            evidencia: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')) || null,
+                            evidencia: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
                             estado: getCol(fila, ['Estado (Resuelto / Pendiente)', 'Estado'])
                         };
                     });
@@ -384,19 +385,19 @@
                 }
 
             } catch (error) {
-                console.error("Error al cargar datos:", error);
-                tableBodyPedidos.innerHTML = `<tr><td colspan="12" class="loader-container" style="color:red;">Error de Conexión</td></tr>`;
+                console.error(error);
+                document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="12" class="error-container">Error de Conexión</td></tr>`;
             }
         }
 
-        // Renderizar Pestaña Pedidos
         function renderPedidos() {
-            tableBodyPedidos.innerHTML = '';
+            const tbody = document.getElementById('orders-table-body');
+            tbody.innerHTML = '';
             let pendientes = 0;
 
             if (dbOrders.length === 0) {
-                tableBodyPedidos.innerHTML = `<tr><td colspan="12" class="loader-container" style="color: #94a3b8;">No se encontraron pedidos.</td></tr>`;
-                kpiPendientes.textContent = "0";
+                tbody.innerHTML = `<tr><td colspan="12" class="loader-container" style="color: #94a3b8;">No se encontraron pedidos.</td></tr>`;
+                document.getElementById('kpi-pendientes').textContent = "0";
                 return;
             }
 
@@ -421,7 +422,7 @@
                     <td class="truncate-cell" title="${order.ciudad}">${order.ciudad}</td>
                     <td class="td-contact truncate-cell" title="${order.direccion}"><i class="fa-solid fa-location-dot"></i> ${order.direccion}</td>
                     <td class="truncate-cell" title="${order.producto}" style="font-weight: 600;">${order.producto}</td>
-                    <td class="text-center"><span class="td-cant">${order.cantidad}</span></td>
+                    <td class="text-center"><span class="td-cant">${order.cantidad || 1}</span></td>
                     <td class="td-price">${formatCurrency(precioNum)}</td>
                     <td class="text-center"><span class="status-badge ${estadoClass}">${estadoText}</span></td>
                     <td class="text-center">
@@ -433,83 +434,116 @@
                         <div class="action-container">
                             ${!order.guia ? `
                                 <button onclick="solicitarGuiaReal('${order.id}', ${index})" class="btn-action btn-guia" title="Generar guía"><i class="fa-solid fa-truck-fast"></i> Guía Nac.</button>
-                                <button onclick="gestionarMoto('${order.id}', ${index})" class="btn-action btn-moto" title="Enviar a la Moto"><i class="fa-brands fa-whatsapp"></i> Moto Domi</button>
+                                <button onclick="gestionarMoto('${order.id}', ${index})" class="btn-action btn-moto" title="Enviar a Moto"><i class="fa-brands fa-whatsapp"></i> Moto Domi</button>
                             ` : `
                                 <button onclick="notificarCliente('${order.id}', ${index})" class="btn-action btn-notify" title="Avisar al cliente"><i class="fa-brands fa-whatsapp"></i> Notificar Cliente</button>
                             `}
                         </div>
                     </td>
                 `;
-                tableBodyPedidos.appendChild(tr);
+                tbody.appendChild(tr);
             });
-            kpiPendientes.textContent = pendientes;
+            document.getElementById('kpi-pendientes').textContent = pendientes;
         }
 
-        // Renderizar Pestaña PQR
         function renderPQR() {
-            tableBodyPQR.innerHTML = '';
+            const tbody = document.getElementById('pqr-table-body');
+            tbody.innerHTML = '';
             if (dbPQRs.length === 0) {
-                tableBodyPQR.innerHTML = `<tr><td colspan="8" class="loader-container" style="color: #94a3b8;">No hay PQR registrados.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="loader-container" style="color: #94a3b8;">No hay PQR registrados.</td></tr>`;
                 return;
             }
 
             dbPQRs.forEach(pqr => {
                 const tr = document.createElement('tr');
-                let estadoClass = pqr.estado.toLowerCase().includes('resuelto') ? 'status-despachado' : 'status-pendiente';
+                // Asignamos color verde solo si dice "resuelto" en cualquier formato
+                let estadoLimpio = pqr.estado ? pqr.estado.toString().toLowerCase() : "";
+                let estadoClass = estadoLimpio.includes('resuelto') ? 'status-despachado' : 'status-pendiente';
                 
                 tr.innerHTML = `
                     <td class="td-id" style="color: #ea580c;">${pqr.idPedido}</td>
-                    <td>${pqr.fecha.split(',')[0]}</td>
+                    <td>${pqr.fecha ? pqr.fecha.split(',')[0] : ''}</td>
                     <td style="text-transform: capitalize; font-weight: 600;">${pqr.novedad}</td>
                     <td class="td-cliente truncate-cell">${pqr.cliente}</td>
                     <td class="td-contact"><i class="fa-solid fa-phone"></i> ${pqr.telefono}</td>
                     <td class="truncate-cell" title="${pqr.descripcion}">${pqr.descripcion}</td>
                     <td class="text-center">
-                        ${pqr.evidencia ? 
+                        ${pqr.evidencia && pqr.evidencia.includes('http') ? 
                           `<a href="${pqr.evidencia}" target="_blank" class="link-soporte" style="color:#ea580c; background:#ffedd5;"><i class="fa-solid fa-image"></i> Ver Foto</a>` 
                           : `<span class="no-soporte">Sin foto</span>`}
                     </td>
                     <td class="text-center"><span class="status-badge ${estadoClass}">${pqr.estado}</span></td>
                 `;
-                tableBodyPQR.appendChild(tr);
+                tbody.appendChild(tr);
             });
         }
 
-        // Lógica Pestaña Liquidación
         function calcularLiquidacion() {
+            const tableBodyLiq = document.getElementById('liq-table-body');
             const dateInput = document.getElementById('liq-date').value;
+            
             if(!dateInput) {
-                tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #ef4444; font-weight:600; padding: 40px;">Por favor, selecciona una fecha primero.</td></tr>`;
+                tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #ef4444; font-weight:600; padding: 40px;">Por favor, selecciona una fecha en el calendario.</td></tr>`;
                 return;
             }
 
-            // Convertir YYYY-MM-DD a formato D/M/YYYY (que es como suele guardarlo el Apps Script en es-CO)
-            const [year, month, day] = dateInput.split('-');
-            const d = parseInt(day, 10);
-            const m = parseInt(month, 10);
-            const targetDate1 = `${d}/${m}/${year}`;
-            const targetDate2 = `${day}/${month}/${year}`;
+            // El input date entrega formato YYYY-MM-DD
+            const [tYear, tMonth, tDay] = dateInput.split('-').map(Number);
 
-            // Filtrar pedidos que coincidan con la fecha
-            const ventasDia = dbOrders.filter(o => o.fecha.startsWith(targetDate1) || o.fecha.startsWith(targetDate2));
+            // Parser invencible de fechas de Excel
+            const parseExcelDate = (dateStr) => {
+                if (!dateStr) return null;
+                // Nos quedamos solo con la fecha sin la hora (Ej: "3/8/2026, 8:52:14 a. m." -> "3/8/2026")
+                let clean = dateStr.toString().split(',')[0].split(' ')[0].trim();
+                
+                // Reconoce separadores / o -
+                let parts = clean.split('/');
+                if(parts.length !== 3) parts = clean.split('-');
+                
+                if(parts.length === 3) {
+                    let d = parseInt(parts[0], 10);
+                    let m = parseInt(parts[1], 10);
+                    let y = parseInt(parts[2], 10);
+                    
+                    // Si el año está primero en el texto
+                    if (parts[0].length === 4) {
+                        y = parseInt(parts[0], 10);
+                        m = parseInt(parts[1], 10);
+                        d = parseInt(parts[2], 10);
+                    }
+                    return { y, m, d };
+                }
+                return null;
+            };
+
+            // Filtramos las ventas donde el Año, Mes y Día coincidan exactamente
+            const ventasDia = dbOrders.filter(order => {
+                const excelDate = parseExcelDate(order.fecha);
+                if(excelDate) {
+                    return excelDate.y === tYear && excelDate.m === tMonth && excelDate.d === tDay;
+                }
+                return false;
+            });
 
             let totalIngresos = 0;
             let totalProductos = 0;
             const consolidado = {};
 
             ventasDia.forEach(order => {
-                let prodName = order.producto.trim();
+                let prodName = (order.producto || 'Producto sin nombre').trim();
                 let cant = parseInt(order.cantidad) || 1;
-                // Intentar leer el precio total, si no, calcularlo
-                let pTotal = parseFloat(order.precioTotal.toString().replace(/\D/g,''));
-                if(!pTotal || pTotal === 0) {
-                    let pUnit = parseFloat(order.precioUnitario.toString().replace(/\D/g,'')) || 0;
+                
+                // Buscamos el total. Si falla, multiplicamos precio unitario x cantidad
+                let pTotal = parseFloat(order.precioTotal ? order.precioTotal.toString().replace(/\D/g,'') : 0);
+                if (!pTotal || isNaN(pTotal) || pTotal === 0) {
+                    let pUnit = parseFloat(order.precioUnitario ? order.precioUnitario.toString().replace(/\D/g,'') : 0) || 0;
                     pTotal = cant * pUnit;
                 }
 
                 totalIngresos += pTotal;
                 totalProductos += cant;
 
+                // Agrupamos por nombre de producto
                 if(consolidado[prodName]) {
                     consolidado[prodName].cant += cant;
                     consolidado[prodName].ingreso += pTotal;
@@ -518,14 +552,14 @@
                 }
             });
 
-            // Actualizar KPIs
+            // Actualizar KPIs de Liquidación
             document.getElementById('kpi-liq-total').textContent = formatCurrency(totalIngresos);
             document.getElementById('kpi-liq-cant').textContent = totalProductos;
 
-            // Renderizar Tabla
+            // Renderizar la tabla de liquidación
             tableBodyLiq.innerHTML = '';
             if(Object.keys(consolidado).length === 0) {
-                tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">No hay ventas registradas para esta fecha.</td></tr>`;
+                tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">No hay ventas registradas para el día seleccionado.</td></tr>`;
                 return;
             }
 
@@ -538,9 +572,19 @@
                 `;
                 tableBodyLiq.appendChild(tr);
             }
+            
+            // Fila Verde de Total General
+            const trTotal = document.createElement('tr');
+            trTotal.style.backgroundColor = '#f1f5f9';
+            trTotal.innerHTML = `
+                <td style="font-weight: 800; color: #0f172a; text-align: right; text-transform: uppercase;">Total Día:</td>
+                <td class="text-center"><span class="td-cant" style="background: var(--primary); color: white;">${totalProductos}</span></td>
+                <td class="td-price" style="font-size: 16px; font-weight: 800; color: #059669;">${formatCurrency(totalIngresos)}</td>
+            `;
+            tableBodyLiq.appendChild(trTotal);
         }
 
-        // Lógicas de Acción (Moto y Guía)
+        // Lógicas Operativas
         function gestionarMoto(orderId, index) {
             const order = dbOrders[index];
             const msgDomi = `🛵 *NUEVO DOMICILIO STORE TRENDS*\n\n*Cliente:* ${order.cliente}\n*Celular:* ${order.telefono}\n*Ciudad:* ${order.ciudad}\n*Dirección:* ${order.direccion}\n*Pedido:* ${order.id}\n*Artículo:* ${order.producto} (Cant: ${order.cantidad})\n\nPor favor confirmar recibido.`;
@@ -573,12 +617,12 @@
                 if(guia.trim() !== "") {
                     dbOrders[index].guia = guia.trim();
                     renderPedidos();
-                    closeModal();
+                    document.getElementById('custom-modal').classList.remove('active');
                 } else {
                     document.getElementById('modal-input-guia').style.borderColor = "red";
                 }
             };
-            modalOverlay.classList.add('active');
+            document.getElementById('custom-modal').classList.add('active');
             document.getElementById('modal-input-guia').focus();
         }
 
@@ -596,11 +640,11 @@
         }
 
         function closeModal() { 
-            modalOverlay.classList.remove('active'); 
+            document.getElementById('custom-modal').classList.remove('active'); 
             document.getElementById('modal-input-guia').style.borderColor = "#e2e8f0";
         }
 
-        // Inicializar fecha de liquidación al día de hoy
+        // Seleccionar la fecha de hoy por defecto al cargar
         document.getElementById('liq-date').valueAsDate = new Date();
         window.onload = cargarDatosDesdeGoogle;
     </script>
