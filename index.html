@@ -471,7 +471,7 @@
                             telefono: buscar(['tel', 'cel']) || Object.values(fila)[9] || '',
                             descripcion: buscar(['desc']) || Object.values(fila)[6] || '',
                             evidencia: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
-                            estado: buscar(['estado']) || Object.values(fila)[15] || ''
+                            estado: buscar(['estado']) || Object.values(fila)[19] || ''
                         };
                     });
                     renderPQR();
