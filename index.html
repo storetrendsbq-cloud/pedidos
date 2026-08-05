@@ -84,12 +84,12 @@
         }
         .btn-calc:hover { 
             background: var(--primary-hover); 
-            transform: translateY(-2px); /* Se eleva un poquito */
+            transform: translateY(-2px); 
             box-shadow: 0 6px 8px -1px rgba(13, 148, 136, 0.3);
         }
         .btn-calc:active { 
             background: var(--primary-active);
-            transform: translateY(2px); /* Efecto de hundimiento real */
+            transform: translateY(2px); 
             box-shadow: 0 1px 2px -1px rgba(13, 148, 136, 0.3);
         }
 
@@ -162,7 +162,7 @@
     <header>
         <div class="header-left">
             <div class="logo-container">
-                <img src="https://static.wixstatic.com/media/d0ce54_be38c6945e9b4076a0c659ffaa864d84~mv2.png" alt="Bot-On Logo" class="logo-img" />
+                <img src="https://static.wixstatic.com/media/d0ce54_be38c6945e9b4076a0c659ffaa864d84~mv2.png" alt="Store Trends Logo" class="logo-img" />
                 <div class="logo-text">Bot-On.</div>
             </div>
             <div class="page-title">Centro de Despachos</div>
@@ -185,7 +185,7 @@
         <div class="tabs-container">
             <button class="tab-btn active" onclick="switchTab('pedidos', this)"><i class="fa-solid fa-box"></i> Pedidos</button>
             <button class="tab-btn" onclick="switchTab('pqr', this)"><i class="fa-solid fa-headset"></i> Gestión PQR</button>
-            <button class="tab-btn" onclick="switchTab('liq', this)"><i class="fa-solid fa-chart-line"></i> Liquidación Diaria</button>
+            <button class="tab-btn" onclick="switchTab('liq', this)"><i class="fa-solid fa-chart-line"></i> Liquidación de Ventas</button>
         </div>
 
         <!-- TAB 1: PEDIDOS -->
@@ -217,7 +217,6 @@
                 <div class="table-container">
                     <table>
                         <thead>
-                            <!-- ENCABEZADOS EXACTOS SOLICITADOS -->
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre del Cliente</th>
@@ -273,19 +272,19 @@
             </div>
         </div>
 
-        <!-- TAB 3: LIQUIDACION -->
+        <!-- TAB 3: LIQUIDACION (CON RANGO DE FECHAS) -->
         <div id="tab-liq" class="tab-content">
             <div class="kpi-grid">
                 <div class="kpi-card">
                     <div class="kpi-info">
-                        <h3>Total Ingresos del Día</h3>
+                        <h3>Total Ingresos del Periodo</h3>
                         <p id="kpi-liq-total">$0</p>
                     </div>
                     <div class="kpi-icon icon-green"><i class="fa-solid fa-sack-dollar"></i></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-info">
-                        <h3>Productos Vendidos</h3>
+                        <h3>Total Productos Vendidos</h3>
                         <p id="kpi-liq-cant">0</p>
                     </div>
                     <div class="kpi-icon icon-blue"><i class="fa-solid fa-tags"></i></div>
@@ -299,10 +298,14 @@
                         <h2>Consolidado de Ventas</h2>
                     </div>
                     <div class="date-picker-container">
-                        <input type="date" id="liq-date" class="date-input" onchange="calcularLiquidacion()">
-                        <!-- BOTÓN VIVO Y DINÁMICO -->
-                        <button class="btn-calc" onclick="calcularLiquidacion()">
-                            <i class="fa-solid fa-rotate-right"></i> Calcular Totales
+                        <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Desde:</span>
+                        <input type="date" id="liq-date-start" class="date-input" onchange="calcularLiquidacion()">
+                        
+                        <span style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-left: 8px;">Hasta:</span>
+                        <input type="date" id="liq-date-end" class="date-input" onchange="calcularLiquidacion()">
+                        
+                        <button class="btn-calc" onclick="calcularLiquidacion()" style="margin-left: 8px;">
+                            <i class="fa-solid fa-rotate-right"></i> Calcular
                         </button>
                     </div>
                 </div>
@@ -316,7 +319,7 @@
                             </tr>
                         </thead>
                         <tbody id="liq-table-body">
-                            <tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">Selecciona una fecha y haz clic en calcular.</td></tr>
+                            <tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">Selecciona el rango de fechas y haz clic en calcular.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -345,8 +348,6 @@
         // ⚠️ PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
         // ==========================================
         const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyJtdneZrgKDEj9bJK9rVxEyi3PUuV106Jt0czn1UsiOrUz3KQvyUl9oHplIqOMtj5J2w/exec?action=getPedidos";
-        
-        // URL Dinámica para PQR
         const GOOGLE_URL_PQR = GOOGLE_WEB_APP_URL.replace("getPedidos", "getPQR");
         const NUMERO_DOMICILIARIO = "573054813630"; 
 
@@ -363,7 +364,7 @@
             document.getElementById('tab-' + tabId).classList.add('active');
         }
 
-        // CARGAR DATOS
+        // CARGAR DATOS DESDE GOOGLE
         async function cargarPedidosDesdeGoogle() {
             document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="13" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando Pedidos...</p></td></tr>`;
             document.getElementById('pqr-table-body').innerHTML = `<tr><td colspan="8" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando PQR...</p></td></tr>`;
@@ -377,7 +378,6 @@
                 if (resPedidos && resPedidos.ok) {
                     const datosExcel = await resPedidos.json();
                     
-                    // ESCUDO DE ENCABEZADOS: Mapeo inteligente sin importar si cambias el nombre de la columna
                     dbOrders = datosExcel.filter(fila => fila['Número de Pedido'] || fila['# Pedido'] || Object.values(fila)[1]).reverse().map((fila, i) => {
                         return {
                             id: fila['Número de Pedido'] || fila['# Pedido'] || fila['ID'] || Object.values(fila)[1] || (i+1),
@@ -395,7 +395,7 @@
                         };
                     });
                     renderTable();
-                    calcularLiquidacion(); // Calcula automáticamente si hay fecha
+                    calcularLiquidacion();
                 }
 
                 if (resPQR && resPQR.ok) {
@@ -459,7 +459,7 @@
                     <td class="text-center"><span class="td-cant">${order.cantidad}</span></td>
                     <td class="text-center"><span class="status-badge ${estadoClass}">${estadoText}</span></td>
                     <td class="text-center">
-                        ${order.linkPago ? 
+                        ${order.linkPago && order.linkPago.includes('http') ? 
                           `<a href="${order.linkPago}" target="_blank" class="link-soporte" title="Ver comprobante"><i class="fa-solid fa-receipt"></i> Soporte</a>` 
                           : `<span class="no-soporte"><i class="fa-solid fa-circle-exclamation"></i> Sin soporte</span>`}
                     </td>
@@ -489,7 +489,28 @@
             }
 
             dbPQRs.forEach(pqr => {
-        // LIQUIDACIÓN DIARIA INVENCIBLE (AHORA POR RANGO)
+                const tr = document.createElement('tr');
+                let estadoClass = pqr.estado.toLowerCase().includes('resuelto') ? 'status-despachado' : 'status-pendiente';
+                
+                tr.innerHTML = `
+                    <td class="td-id">${pqr.idPedido}</td>
+                    <td>${pqr.fecha}</td>
+                    <td style="font-weight:600; text-transform:capitalize;">${pqr.novedad}</td>
+                    <td class="td-cliente">${pqr.cliente}</td>
+                    <td class="td-contact"><i class="fa-solid fa-phone"></i> ${pqr.telefono}</td>
+                    <td class="truncate-cell" title="${pqr.descripcion}">${pqr.descripcion}</td>
+                    <td class="text-center">
+                        ${pqr.evidencia && pqr.evidencia.includes('http') ? 
+                          `<a href="${pqr.evidencia}" target="_blank" class="link-soporte"><i class="fa-solid fa-image"></i> Ver Foto</a>` 
+                          : `<span class="no-soporte">Sin foto</span>`}
+                    </td>
+                    <td class="text-center"><span class="status-badge ${estadoClass}">${pqr.estado}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // LIQUIDACIÓN DIARIA INVENCIBLE (POR RANGO DE FECHAS)
         function calcularLiquidacion() {
             const tableBodyLiq = document.getElementById('liq-table-body');
             const dateStart = document.getElementById('liq-date-start').value; 
@@ -497,37 +518,30 @@
             
             if(!dateStart && !dateEnd) return;
 
-            // ANIMACIÓN VISUAL DE CARGA PARA EL BOTÓN
             tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="padding: 40px;"><div class="loader" style="width:24px; height:24px; margin:0 auto; border-width:2px;"></div><p style="color:var(--primary); font-weight:600; margin-top:8px;">Calculando ventas...</p></td></tr>`;
 
-            // Timeout súper cortico para que se alcance a ver la animación y el usuario sepa que el botón sí se presionó
             setTimeout(() => {
-                // Convertir la fecha del input (YYYY-MM-DD) a un número (YYYYMMDD) para comparaciones fáciles de "mayor o menor"
                 const dateToNum = (dStr) => {
                     if(!dStr) return null;
                     const [y, m, d] = dStr.split('-').map(Number);
                     return y * 10000 + m * 100 + d;
                 };
 
-                let numStart = dateToNum(dateStart || dateEnd); // Si solo llenan una, asume que es para ese mismo día
+                let numStart = dateToNum(dateStart || dateEnd); 
                 let numEnd = dateToNum(dateEnd || dateStart);
                 
-                // Blindaje: Asegurar que el inicio siempre sea menor que el fin, incluso si el usuario se equivoca y las pone al revés
                 const rangoInicio = Math.min(numStart, numEnd);
                 const rangoFin = Math.max(numStart, numEnd);
 
-                // Traductor universal de fechas
                 const parseDateFlexible = (dateStr) => {
                     if (!dateStr) return null;
                     let clean = dateStr.toString().toLowerCase().trim();
                     
-                    // Si viene como fecha ISO limpia
                     if(clean.includes('t') || clean.match(/^\d{4}-\d{2}-\d{2}$/)) {
                         let d = new Date(clean);
                         if(!isNaN(d)) return { y: d.getFullYear(), m: d.getMonth() + 1, d: d.getDate() };
                     }
                     
-                    // Quitar la hora si la trae de Excel
                     clean = clean.split(',')[0].split(' ')[0];
                     let parts = clean.includes('/') ? clean.split('/') : clean.split('-');
                     
@@ -546,10 +560,8 @@
                 const ventasDia = dbOrders.filter(order => {
                     const d = parseDateFlexible(order.fecha);
                     if (d) {
-                        const numOpA = d.y * 10000 + d.m * 100 + d.d; // Formato D/M/Y
-                        const numOpB = d.y * 10000 + d.d * 100 + d.m; // Formato M/D/Y (Excel gringo)
-                        
-                        // Si cualquiera de las dos posibles lecturas de fecha cae dentro del rango de días, la sumamos
+                        const numOpA = d.y * 10000 + d.m * 100 + d.d; 
+                        const numOpB = d.y * 10000 + d.d * 100 + d.m; 
                         return (numOpA >= rangoInicio && numOpA <= rangoFin) || 
                                (numOpB >= rangoInicio && numOpB <= rangoFin);
                     }
@@ -561,11 +573,8 @@
                 const consolidado = {};
 
                 ventasDia.forEach(order => {
-                    // El buscador trata de agarrar el nombre desde cualquier columna que la IA o tu Excel haya usado
                     let prodName = (order.producto || order.referencia || 'Producto Genérico').trim();
                     let cant = parseInt(order.cantidad) || 1;
-                    
-                    // Extraemos el valor matemático exacto del precio
                     let precioRaw = order.precioUnitario || order.precio_unitario || order.precio || "0";
                     let pUnit = parseFloat(precioRaw.toString().replace(/\D/g,'')) || 0;
                     
@@ -602,7 +611,6 @@
                     tableBodyLiq.appendChild(tr);
                 }
                 
-                // Fila Verde Espectacular de Total
                 const trTotal = document.createElement('tr');
                 trTotal.style.backgroundColor = '#f1f5f9';
                 trTotal.innerHTML = `
@@ -612,10 +620,10 @@
                 `;
                 tableBodyLiq.appendChild(trTotal);
                 
-            }, 350); // Fin del timeout
+            }, 350); 
         }
 
-        // Lógicas Operativas de WhatsApp
+        // ACCIONES LOGÍSTICAS Y MODALES
         function gestionarMoto(orderId, index) {
             const order = dbOrders[index];
             const msgDomi = `🛵 *NUEVO DOMICILIO STORE TRENDS*\n\n*Cliente:* ${order.cliente}\n*Celular:* ${order.telefono}\n*Ciudad:* ${order.ciudad}\n*Dirección:* ${order.direccion}\n*Pedido:* ${order.id}\n*Artículo:* ${order.producto} (Cant: ${order.cantidad})\n\nPor favor confirmar recibido.`;
@@ -675,7 +683,7 @@
             document.getElementById('modal-input-guia').style.borderColor = "#e2e8f0";
         }
 
-        // Seleccionar la fecha de hoy por defecto en ambos campos
+        // INICIALIZACIÓN
         const hoy = new Date();
         document.getElementById('liq-date-start').valueAsDate = hoy;
         document.getElementById('liq-date-end').valueAsDate = hoy;
