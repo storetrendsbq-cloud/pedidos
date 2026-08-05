@@ -384,10 +384,12 @@
         // ==========================================
         const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxu839y0Qe9EGWXtL51FC2eFG-m8twblf57a6qODrJv9v-EZzD54NhVmOPXD9FNsp5yUw/exec?action=getPedidos";
         const GOOGLE_URL_PQR = GOOGLE_WEB_APP_URL.replace("action=getPedidos", "action=getPQR");
+        const GOOGLE_URL_CRM = GOOGLE_WEB_APP_URL.replace("action=getPedidos", "action=getCRM");
         const NUMERO_DOMICILIARIO = "573054813630"; 
 
         let dbOrders = [];
         let dbPQRs = [];
+        let dbCRM = [];
         
         const formatCurrency = (val) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(val);
 
@@ -399,15 +401,17 @@
             document.getElementById('tab-' + tabId).classList.add('active');
         }
 
-        // CARGAR DATOS MULTIPLES (Pedidos y PQR)
+        // CARGAR DATOS MULTIPLES (Pedidos, PQR, CRM)
         async function cargarPedidosDesdeGoogle() {
             document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="12" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando Pedidos...</p></td></tr>`;
             document.getElementById('pqr-table-body').innerHTML = `<tr><td colspan="8" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando PQR...</p></td></tr>`;
+            document.getElementById('crm-table-body').innerHTML = `<tr><td colspan="9" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando CRM...</p></td></tr>`;
             
             try {
-                const [resPedidos, resPQR] = await Promise.all([
+                const [resPedidos, resPQR, resCRM] = await Promise.all([
                     fetch(GOOGLE_WEB_APP_URL, { redirect: "follow" }).catch(()=>null),
-                    fetch(GOOGLE_URL_PQR, { redirect: "follow" }).catch(()=>null)
+                    fetch(GOOGLE_URL_PQR, { redirect: "follow" }).catch(()=>null),
+                    fetch(GOOGLE_URL_CRM, { redirect: "follow" }).catch(()=>null)
                 ]);
 
                 // Procesar Pedidos
@@ -420,28 +424,28 @@
                                 if(palabras.some(p => keyL.includes(p))) return fila[key];
                             }
                             return null;
-                        };
-
-                        return {
-                            id: buscar(['pedido', 'id']) || Object.values(fila)[1] || (i+1),
-                            cliente: buscar(['cliente']) || Object.values(fila)[8] || 'Sin nombre',
-                            telefono: buscar(['tel', 'cel']) || Object.values(fila)[10] || 'Sin teléfono',
-                            correo: buscar(['correo', 'email']) || Object.values(fila)[9] || 'Sin correo',
-                            ciudad: buscar(['ciudad']) || Object.values(fila)[12] || '',
-                            direccion: buscar(['direc']) || Object.values(fila)[11] || '',
-                            producto: buscar(['producto', 'ref']) || Object.values(fila)[3] || 'Producto',
-                            cantidad: parseInt(buscar(['cant'])) || parseInt(Object.values(fila)[4]) || 1,
-                            precioUnitario: parseFloat(String(buscar(['precio unitario', 'precio']) || Object.values(fila)[5] || '0').replace(/\D/g, '')) || 0,
-                            fecha: buscar(['fecha', 'date']) || Object.values(fila)[2] || '',
-                            linkPago: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
-                            guia: buscar(['guia', 'guía']) ? buscar(['guia', 'guía']) : null,
-                            estado: buscar(['estado']) || Object.values(fila)[15] || '''
-                        };
-                    });
-                    renderTable();
+                const datosExcel = await respuesta.json();
+                
+                dbOrders = datosExcel.filter(fila => fila['# Pedido']).reverse().map((fila, i) => {
+                    return {
+                        id: fila['# Pedido'] || (i+1),
+                        cliente: fila['Nombre completo'] || fila['Cliente'] || 'Sin nombre',
+                        telefono: fila['Telefono'] || fila['Teléfono'] || 'Sin teléfono',
+                        correo: fila['Correo electrónico'] || fila['Correo'] || 'Sin correo',
+                        ciudad: fila['Ciudad'] || '',
+                        direccion: fila['Dirección'] || '',
+                        referencia: fila['Referencia'] || fila['Producto'] || 'Producto',
+                        talla: fila['Talla'] || 'N/A',
+                        cantidad: fila['Cantidad'] || '1',
+                        linkPago: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
+                        guia: fila['Guia'] ? fila['Guia'] : null,
+                        estado: fila['Estado'] || 'NUEVO'
+                    };
+                });
+                
+                renderTable();
                     calcularKPIs();
                     calcularLiquidacion();
-                    extraerCRMLocal();
                 }
 
                 // Procesar PQR
@@ -469,70 +473,17 @@
                     renderPQR();
                 }
 
+                // Procesar CRM
+                if (resCRM && resCRM.ok) {
+                    dbCRM = await resCRM.json();
+                    renderCRM();
+                } else {
+                    document.getElementById('crm-table-body').innerHTML = `<tr><td colspan="9" class="error-container">No se pudo cargar el CRM.</td></tr>`;
+                }
+
             } catch (error) {
                 console.error("Error cargando datos:", error);
             }
-        }
-
-        // NUEVO: Extraer CRM a partir de los Pedidos en el navegador
-        function extraerCRMLocal() {
-            const clientes = {};
-            // Recorrer los pedidos de más antiguos a más nuevos para registrar últimas compras
-            [...dbOrders].reverse().forEach(order => {
-                if(!order.telefono || order.telefono === 'Sin teléfono') return;
-                let telKey = String(order.telefono).replace(/\D/g, '');
-                if(!clientes[telKey]) {
-                    clientes[telKey] = {
-                        telefono: order.telefono,
-                        nombre: order.cliente,
-                        ciudad: order.ciudad,
-                        correo: order.correo,
-                        totalCompras: 0,
-                        totalGastado: 0,
-                        ultimaCompra: order.fecha,
-                        etiqueta: "Nuevo",
-                        campana: "NO"
-                    };
-                }
-                
-                clientes[telKey].totalCompras += 1;
-                clientes[telKey].totalGastado += (order.precioUnitario * order.cantidad);
-                clientes[telKey].ultimaCompra = order.fecha; // Se sobreescribe con la más reciente
-                
-                if (clientes[telKey].totalCompras > 1) {
-                    clientes[telKey].etiqueta = "Recurrente";
-                }
-            });
-
-            // Convertir objeto a arreglo
-            let dbCRM = Object.values(clientes);
-            // Ordenar para mostrar los clientes con más compras primero
-            dbCRM.sort((a, b) => b.totalCompras - a.totalCompras);
-
-            // Renderizar la tabla CRM
-            const tbody = document.getElementById('crm-table-body');
-            tbody.innerHTML = '';
-            if (dbCRM.length === 0) return tbody.innerHTML = `<tr><td colspan="9" class="loader-container" style="color: #94a3b8;">No hay clientes registrados.</td></tr>`;
-
-            dbCRM.forEach(cliente => {
-                const tr = document.createElement('tr');
-                let etiquetaClass = 'status-ingresado'; 
-                if (cliente.etiqueta.toLowerCase() === 'recurrente') etiquetaClass = 'status-despachado'; 
-                if (cliente.etiqueta.toLowerCase() === 'frío') etiquetaClass = 'status-pendiente'; 
-                
-                tr.innerHTML = `
-                    <td class="td-id" style="width:auto;"><i class="fa-brands fa-whatsapp" style="color: #25D366; font-size:14px; margin-right:4px;"></i> ${cliente.telefono}</td>
-                    <td class="td-cliente">${cliente.nombre}</td>
-                    <td>${cliente.ciudad}</td>
-                    <td class="td-contact truncate-cell"><i class="fa-solid fa-envelope"></i> ${cliente.correo}</td>
-                    <td class="text-center"><span class="td-cant">${cliente.totalCompras}</span></td>
-                    <td class="td-price">${formatCurrency(cliente.totalGastado)}</td>
-                    <td class="truncate-cell">${cliente.ultimaCompra}</td>
-                    <td class="text-center"><span class="status-badge ${etiquetaClass}">${cliente.etiqueta}</span></td>
-                    <td class="text-center"><span class="status-badge status-ingresado">${cliente.campana}</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
         }
 
         // CONFIRMAR CAMBIO DE ESTADO DESDE EL DROPDOWN
@@ -671,6 +622,44 @@
                           : `<span class="no-soporte">Sin foto</span>`}
                     </td>
                     <td class="text-center"><span class="status-badge ${estadoClass}">${pqr.estado}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderCRM() {
+            const tbody = document.getElementById('crm-table-body');
+            tbody.innerHTML = '';
+            if (!dbCRM || dbCRM.length === 0) return tbody.innerHTML = `<tr><td colspan="9" class="loader-container" style="color: #94a3b8;">No hay clientes registrados en el CRM.</td></tr>`;
+
+            // Ordenamos por total de compras (de mayor a menor)
+            dbCRM.sort((a, b) => {
+                let compA = parseInt(a['Total Compras'] || 0);
+                let compB = parseInt(b['Total Compras'] || 0);
+                return compB - compA;
+            });
+
+            dbCRM.forEach(cliente => {
+                if(!cliente['Teléfono']) return; // saltar vacíos
+                
+                const tr = document.createElement('tr');
+                let etiquetaClass = 'status-ingresado'; 
+                let campanaClass = 'status-ingresado';
+                
+                if (cliente['Etiqueta'].toLowerCase() === 'recurrente') etiquetaClass = 'status-despachado'; 
+                if (cliente['Etiqueta'].toLowerCase() === 'frío') etiquetaClass = 'status-pendiente'; 
+                if (cliente['Campaña 30D'].toLowerCase() === 'si') campanaClass = 'status-despachado';
+                
+                tr.innerHTML = `
+                    <td class="td-id" style="width:auto;"><i class="fa-brands fa-whatsapp" style="color: #25D366; font-size:14px; margin-right:4px;"></i> ${cliente['Teléfono']}</td>
+                    <td class="td-cliente">${cliente['Nombre']}</td>
+                    <td>${cliente['Ciudad']}</td>
+                    <td class="td-contact truncate-cell"><i class="fa-solid fa-envelope"></i> ${cliente['Correo']}</td>
+                    <td class="text-center"><span class="td-cant">${cliente['Total Compras']}</span></td>
+                    <td class="td-price">${formatCurrency(cliente['Total Gastado'])}</td>
+                    <td class="truncate-cell">${cliente['Fecha Última Compra']}</td>
+                    <td class="text-center"><span class="status-badge ${etiquetaClass}">${cliente['Etiqueta']}</span></td>
+                    <td class="text-center"><span class="status-badge ${campanaClass}">${cliente['Campaña 30D']}</span></td>
                 `;
                 tbody.appendChild(tr);
             });
