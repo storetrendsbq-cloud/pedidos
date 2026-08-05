@@ -489,41 +489,32 @@
             }
 
             dbPQRs.forEach(pqr => {
-                const tr = document.createElement('tr');
-                let estadoLimpio = pqr.estado ? pqr.estado.toString().toLowerCase() : "";
-                let estadoClass = estadoLimpio.includes('resuelto') ? 'status-despachado' : 'status-pendiente';
-                
-                tr.innerHTML = `
-                    <td class="td-id" style="color: #ea580c;">${pqr.idPedido}</td>
-                    <td>${pqr.fecha ? pqr.fecha.split(',')[0] : ''}</td>
-                    <td style="text-transform: capitalize; font-weight: 600;">${pqr.novedad}</td>
-                    <td class="td-cliente truncate-cell">${pqr.cliente}</td>
-                    <td class="td-contact"><i class="fa-solid fa-phone"></i> ${pqr.telefono}</td>
-                    <td class="truncate-cell" title="${pqr.descripcion}">${pqr.descripcion}</td>
-                    <td class="text-center">
-                        ${pqr.evidencia && pqr.evidencia.includes('http') ? 
-                          `<a href="${pqr.evidencia}" target="_blank" class="link-soporte" style="color:#ea580c; background:#ffedd5;"><i class="fa-solid fa-image"></i> Ver Foto</a>` 
-                          : `<span class="no-soporte">Sin foto</span>`}
-                    </td>
-                    <td class="text-center"><span class="status-badge ${estadoClass}">${pqr.estado}</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        // LIQUIDACIÓN DIARIA INVENCIBLE
+        // LIQUIDACIÓN DIARIA INVENCIBLE (AHORA POR RANGO)
         function calcularLiquidacion() {
             const tableBodyLiq = document.getElementById('liq-table-body');
-            const dateInput = document.getElementById('liq-date').value; 
+            const dateStart = document.getElementById('liq-date-start').value; 
+            const dateEnd = document.getElementById('liq-date-end').value; 
             
-            if(!dateInput) return;
+            if(!dateStart && !dateEnd) return;
 
             // ANIMACIÓN VISUAL DE CARGA PARA EL BOTÓN
             tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="padding: 40px;"><div class="loader" style="width:24px; height:24px; margin:0 auto; border-width:2px;"></div><p style="color:var(--primary); font-weight:600; margin-top:8px;">Calculando ventas...</p></td></tr>`;
 
             // Timeout súper cortico para que se alcance a ver la animación y el usuario sepa que el botón sí se presionó
             setTimeout(() => {
-                const [tYear, tMonth, tDay] = dateInput.split('-').map(Number);
+                // Convertir la fecha del input (YYYY-MM-DD) a un número (YYYYMMDD) para comparaciones fáciles de "mayor o menor"
+                const dateToNum = (dStr) => {
+                    if(!dStr) return null;
+                    const [y, m, d] = dStr.split('-').map(Number);
+                    return y * 10000 + m * 100 + d;
+                };
+
+                let numStart = dateToNum(dateStart || dateEnd); // Si solo llenan una, asume que es para ese mismo día
+                let numEnd = dateToNum(dateEnd || dateStart);
+                
+                // Blindaje: Asegurar que el inicio siempre sea menor que el fin, incluso si el usuario se equivoca y las pone al revés
+                const rangoInicio = Math.min(numStart, numEnd);
+                const rangoFin = Math.max(numStart, numEnd);
 
                 // Traductor universal de fechas
                 const parseDateFlexible = (dateStr) => {
@@ -555,8 +546,12 @@
                 const ventasDia = dbOrders.filter(order => {
                     const d = parseDateFlexible(order.fecha);
                     if (d) {
-                        return (d.y === tYear && d.m === tMonth && d.d === tDay) || 
-                               (d.y === tYear && d.d === tMonth && d.m === tDay);
+                        const numOpA = d.y * 10000 + d.m * 100 + d.d; // Formato D/M/Y
+                        const numOpB = d.y * 10000 + d.d * 100 + d.m; // Formato M/D/Y (Excel gringo)
+                        
+                        // Si cualquiera de las dos posibles lecturas de fecha cae dentro del rango de días, la sumamos
+                        return (numOpA >= rangoInicio && numOpA <= rangoFin) || 
+                               (numOpB >= rangoInicio && numOpB <= rangoFin);
                     }
                     return false;
                 });
@@ -566,9 +561,14 @@
                 const consolidado = {};
 
                 ventasDia.forEach(order => {
-                    let prodName = (order.producto || 'Producto Genérico').trim();
+                    // El buscador trata de agarrar el nombre desde cualquier columna que la IA o tu Excel haya usado
+                    let prodName = (order.producto || order.referencia || 'Producto Genérico').trim();
                     let cant = parseInt(order.cantidad) || 1;
-                    let pUnit = parseFloat(order.precioUnitario ? order.precioUnitario.toString().replace(/\D/g,'') : 0) || 0;
+                    
+                    // Extraemos el valor matemático exacto del precio
+                    let precioRaw = order.precioUnitario || order.precio_unitario || order.precio || "0";
+                    let pUnit = parseFloat(precioRaw.toString().replace(/\D/g,'')) || 0;
+                    
                     let pTotal = cant * pUnit;
 
                     totalIngresos += pTotal;
@@ -588,7 +588,7 @@
                 tableBodyLiq.innerHTML = '';
                 
                 if(Object.keys(consolidado).length === 0) {
-                    tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #94a3b8; font-weight:600; padding: 40px;">No hay ventas registradas para el día seleccionado.</td></tr>`;
+                    tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #94a3b8; font-weight:600; padding: 40px;">No hay ventas registradas para el rango seleccionado.</td></tr>`;
                     return;
                 }
 
@@ -606,7 +606,7 @@
                 const trTotal = document.createElement('tr');
                 trTotal.style.backgroundColor = '#f1f5f9';
                 trTotal.innerHTML = `
-                    <td style="font-weight: 800; color: #0f172a; text-align: right; text-transform: uppercase;">Total Día:</td>
+                    <td style="font-weight: 800; color: #0f172a; text-align: right; text-transform: uppercase;">Total Consolidado:</td>
                     <td class="text-center"><span class="td-cant" style="background: var(--primary); color: white;">${totalProductos}</span></td>
                     <td class="td-price" style="font-size: 16px; font-weight: 800; color: #059669;">${formatCurrency(totalIngresos)}</td>
                 `;
@@ -675,8 +675,11 @@
             document.getElementById('modal-input-guia').style.borderColor = "#e2e8f0";
         }
 
-        // Seleccionar la fecha de hoy por defecto
-        document.getElementById('liq-date').valueAsDate = new Date();
+        // Seleccionar la fecha de hoy por defecto en ambos campos
+        const hoy = new Date();
+        document.getElementById('liq-date-start').valueAsDate = hoy;
+        document.getElementById('liq-date-end').valueAsDate = hoy;
+
         window.onload = cargarPedidosDesdeGoogle;
     </script>
 </body>
