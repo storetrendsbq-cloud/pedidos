@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store Trends | ERP Web</title>
+    <title>Bot-⏻n | Centro de Despachos</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -93,9 +93,17 @@
         .td-price { font-weight: 700; color: #059669; }
         .text-center { text-align: center; }
         
+        /* SELECT DE ESTADOS INTERACTIVO */
+        .status-select { padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 11px; font-weight: 700; background: #f8fafc; color: #475569; cursor: pointer; outline: none; transition: all 0.2s; }
+        .status-select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(13,148,136,0.1); }
+        .status-select.nuevo { background-color: #f1f5f9; color: #475569; }
+        .status-select.preparando { background-color: #fef08a; color: #b45309; border-color: #fde047; }
+        .status-select.despachado { background-color: #dbeafe; color: #1d4ed8; border-color: #bfdbfe; }
+        .status-select.entregado { background-color: #dcfce7; color: #15803d; border-color: #bbf7d0; }
+        .status-select.cancelado { background-color: #fee2e2; color: #b91c1c; border-color: #fecaca; }
+
         .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; }
         .status-ingresado { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
-        .status-despachado { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
         .status-pendiente { background-color: #fef08a; color: #b45309; border: 1px solid #fde047; }
         
         .link-soporte { display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: #2563eb; font-weight: 600; text-decoration: none; background: #eff6ff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s; white-space: nowrap; font-size: 11px;}
@@ -141,8 +149,8 @@
     <header>
         <div class="header-left">
             <div class="logo-container">
-                <img src="https://static.wixstatic.com/media/d0ce54_be38c6945e9b4076a0c659ffaa864d84~mv2.png" alt="Store Trends Logo" class="logo-img" />
-                <div class="logo-text">Bot-On.</div>
+                <img src="https://static.wixstatic.com/media/d0ce54_be38c6945e9b4076a0c659ffaa864d84~mv2.png" alt="Bot-⏻n Logo" class="logo-img" />
+                <div class="logo-text">Bot-⏻n.</div>
             </div>
             <div class="page-title">Plataforma ERP Web</div>
         </div>
@@ -160,7 +168,7 @@
     </header>
 
     <main>
-        <!-- NAVEGACIÓN DE PESTAÑAS (Ahora con CRM) -->
+        <!-- NAVEGACIÓN DE PESTAÑAS -->
         <div class="tabs-container">
             <button class="tab-btn active" onclick="switchTab('pedidos', this)"><i class="fa-solid fa-box"></i> Pedidos</button>
             <button class="tab-btn" onclick="switchTab('pqr', this)"><i class="fa-solid fa-headset"></i> Gestión PQR</button>
@@ -374,14 +382,12 @@
         // ==========================================
         // ⚠️ REEMPLAZA ESTA URL CON TU NUEVA IMPLEMENTACIÓN
         // ==========================================
-        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxkYS-qYayFigZzo76gJLT9SwCQLo83SY1ZeOJjSpVtXH4gW_A3LRnCot3Sc_85bnCB_A/exec?action=getPedidos";
-        const GOOGLE_URL_PQR = GOOGLE_WEB_APP_URL.replace("getPedidos", "getPQR");
-        const GOOGLE_URL_CRM = GOOGLE_WEB_APP_URL.replace("getPedidos", "getCRM"); // Nueva URL para CRM
+        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyIlVO21JMaa6azQbct4TIJ66gUK1MOWGQEJLEOQqEJcUUtb7OemIqCnISxddQImzdR/exec?action=getPedidos";
+        const GOOGLE_URL_PQR = GOOGLE_WEB_APP_URL.replace("action=getPedidos", "action=getPQR");
         const NUMERO_DOMICILIARIO = "573054813630"; 
 
         let dbOrders = [];
         let dbPQRs = [];
-        let dbCRM = []; // Base de datos del CRM
         
         const formatCurrency = (val) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(val);
 
@@ -393,17 +399,15 @@
             document.getElementById('tab-' + tabId).classList.add('active');
         }
 
-        // CARGAR DATOS MULTIPLES (Pedidos, PQR y CRM)
+        // CARGAR DATOS MULTIPLES (Pedidos y PQR)
         async function cargarPedidosDesdeGoogle() {
             document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="12" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando Pedidos...</p></td></tr>`;
             document.getElementById('pqr-table-body').innerHTML = `<tr><td colspan="8" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando PQR...</p></td></tr>`;
-            document.getElementById('crm-table-body').innerHTML = `<tr><td colspan="9" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando CRM...</p></td></tr>`;
             
             try {
-                const [resPedidos, resPQR, resCRM] = await Promise.all([
+                const [resPedidos, resPQR] = await Promise.all([
                     fetch(GOOGLE_WEB_APP_URL, { redirect: "follow" }).catch(()=>null),
-                    fetch(GOOGLE_URL_PQR, { redirect: "follow" }).catch(()=>null),
-                    fetch(GOOGLE_URL_CRM, { redirect: "follow" }).catch(()=>null)
+                    fetch(GOOGLE_URL_PQR, { redirect: "follow" }).catch(()=>null)
                 ]);
 
                 // Procesar Pedidos
@@ -430,12 +434,14 @@
                             precioUnitario: parseFloat(String(buscar(['precio unitario', 'precio']) || Object.values(fila)[5] || '0').replace(/\D/g, '')) || 0,
                             fecha: buscar(['fecha', 'date']) || Object.values(fila)[2] || '',
                             linkPago: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
-                            guia: buscar(['guia', 'guía']) ? buscar(['guia', 'guía']) : null
+                            guia: buscar(['guia', 'guía']) ? buscar(['guia', 'guía']) : null,
+                            estado: buscar(['estado']) || 'NUEVO'
                         };
                     });
                     renderTable();
                     calcularKPIs();
                     calcularLiquidacion();
+                    extraerCRMLocal();
                 }
 
                 // Procesar PQR
@@ -463,37 +469,123 @@
                     renderPQR();
                 }
 
-                // Procesar CRM
-                if (resCRM && resCRM.ok) {
-                    const datosCRM = await resCRM.json();
-                    dbCRM = datosCRM.filter(fila => fila['Teléfono'] || fila['Telefono'] || Object.values(fila)[0]).map(fila => {
-                        let buscar = (palabras) => {
-                            for(let key in fila) {
-                                let keyL = key.toLowerCase();
-                                if(palabras.some(p => keyL.includes(p))) return fila[key];
-                            }
-                            return null;
-                        };
-                        return {
-                            telefono: buscar(['teléfono', 'tel']) || Object.values(fila)[0] || '',
-                            nombre: buscar(['nombre']) || Object.values(fila)[1] || '',
-                            ciudad: buscar(['ciudad']) || Object.values(fila)[2] || '',
-                            correo: buscar(['correo', 'email']) || Object.values(fila)[3] || '',
-                            totalCompras: parseInt(buscar(['compras'])) || Object.values(fila)[4] || 0,
-                            totalGastado: parseFloat(String(buscar(['gastado']) || Object.values(fila)[5] || '0').replace(/\D/g, '')) || 0,
-                            ultimaCompra: buscar(['última', 'ultima', 'fecha']) || Object.values(fila)[6] || '',
-                            etiqueta: buscar(['etiqueta']) || Object.values(fila)[7] || '',
-                            campana: buscar(['campaña', 'campana']) || Object.values(fila)[8] || ''
-                        };
-                    });
-                    // Invertir para mostrar los últimos registrados arriba
-                    dbCRM.reverse();
-                    renderCRM();
-                }
-
             } catch (error) {
                 console.error("Error cargando datos:", error);
             }
+        }
+
+        // NUEVO: Extraer CRM a partir de los Pedidos en el navegador
+        function extraerCRMLocal() {
+            const clientes = {};
+            // Recorrer los pedidos de más antiguos a más nuevos para registrar últimas compras
+            [...dbOrders].reverse().forEach(order => {
+                if(!order.telefono || order.telefono === 'Sin teléfono') return;
+                let telKey = String(order.telefono).replace(/\D/g, '');
+                if(!clientes[telKey]) {
+                    clientes[telKey] = {
+                        telefono: order.telefono,
+                        nombre: order.cliente,
+                        ciudad: order.ciudad,
+                        correo: order.correo,
+                        totalCompras: 0,
+                        totalGastado: 0,
+                        ultimaCompra: order.fecha,
+                        etiqueta: "Nuevo",
+                        campana: "NO"
+                    };
+                }
+                
+                clientes[telKey].totalCompras += 1;
+                clientes[telKey].totalGastado += (order.precioUnitario * order.cantidad);
+                clientes[telKey].ultimaCompra = order.fecha; // Se sobreescribe con la más reciente
+                
+                if (clientes[telKey].totalCompras > 1) {
+                    clientes[telKey].etiqueta = "Recurrente";
+                }
+            });
+
+            // Convertir objeto a arreglo
+            let dbCRM = Object.values(clientes);
+            // Ordenar para mostrar los clientes con más compras primero
+            dbCRM.sort((a, b) => b.totalCompras - a.totalCompras);
+
+            // Renderizar la tabla CRM
+            const tbody = document.getElementById('crm-table-body');
+            tbody.innerHTML = '';
+            if (dbCRM.length === 0) return tbody.innerHTML = `<tr><td colspan="9" class="loader-container" style="color: #94a3b8;">No hay clientes registrados.</td></tr>`;
+
+            dbCRM.forEach(cliente => {
+                const tr = document.createElement('tr');
+                let etiquetaClass = 'status-ingresado'; 
+                if (cliente.etiqueta.toLowerCase() === 'recurrente') etiquetaClass = 'status-despachado'; 
+                if (cliente.etiqueta.toLowerCase() === 'frío') etiquetaClass = 'status-pendiente'; 
+                
+                tr.innerHTML = `
+                    <td class="td-id" style="width:auto;"><i class="fa-brands fa-whatsapp" style="color: #25D366; font-size:14px; margin-right:4px;"></i> ${cliente.telefono}</td>
+                    <td class="td-cliente">${cliente.nombre}</td>
+                    <td>${cliente.ciudad}</td>
+                    <td class="td-contact truncate-cell"><i class="fa-solid fa-envelope"></i> ${cliente.correo}</td>
+                    <td class="text-center"><span class="td-cant">${cliente.totalCompras}</span></td>
+                    <td class="td-price">${formatCurrency(cliente.totalGastado)}</td>
+                    <td class="truncate-cell">${cliente.ultimaCompra}</td>
+                    <td class="text-center"><span class="status-badge ${etiquetaClass}">${cliente.etiqueta}</span></td>
+                    <td class="text-center"><span class="status-badge status-ingresado">${cliente.campana}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // CONFIRMAR CAMBIO DE ESTADO DESDE EL DROPDOWN
+        function confirmarCambioEstado(idPedido, selectElement, telefono, cliente) {
+            const nuevoEstado = selectElement.value;
+            const estadoAnterior = selectElement.getAttribute('data-old-value'); 
+            
+            document.getElementById('modal-title').textContent = 'Confirmar Cambio de Estado';
+            document.getElementById('modal-message').innerHTML = `Vas a cambiar el estado del pedido <b>${idPedido}</b> a <b>${nuevoEstado}</b>.<br><br>Se enviará una notificación automática por WhatsApp a <b>${cliente}</b>.<br>¿Deseas continuar?`;
+            
+            const modalIcon = document.getElementById('modal-icon');
+            modalIcon.className = 'modal-icon info';
+            modalIcon.innerHTML = '<i class="fa-solid fa-bell"></i>';
+            
+            document.getElementById('modal-input-group').style.display = 'none';
+            document.getElementById('modal-btn-cancel').style.display = 'block';
+            
+            const btnPrimary = document.getElementById('modal-btn-primary');
+            btnPrimary.textContent = "Sí, actualizar y notificar";
+            
+            // Asignar el onClick al botón primario
+            btnPrimary.onclick = async () => {
+                closeModal();
+                selectElement.disabled = true; // deshabilitar mientras carga
+                
+                // Animación en la tabla
+                const tableBody = document.getElementById('orders-table-body');
+                tableBody.innerHTML = `<tr><td colspan="12" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Actualizando estado y enviando WhatsApp...</p></td></tr>`;
+                
+                try {
+                    const url = GOOGLE_WEB_APP_URL.replace("action=getPedidos", "action=updateStatus")
+                                + `&id=${encodeURIComponent(idPedido)}`
+                                + `&status=${encodeURIComponent(nuevoEstado)}`
+                                + `&tel=${encodeURIComponent(telefono)}`
+                                + `&cliente=${encodeURIComponent(cliente)}`;
+                    
+                    await fetch(url, { redirect: "follow" });
+                    cargarPedidosDesdeGoogle(); // recarga la tabla
+                } catch(e) {
+                    console.error(e);
+                    selectElement.value = estadoAnterior;
+                    selectElement.disabled = false;
+                    cargarPedidosDesdeGoogle(); // revertir visualmente si hay error
+                }
+            };
+            
+            // Si cancela, regresamos el select al valor original
+            document.getElementById('modal-btn-cancel').onclick = () => {
+                selectElement.value = estadoAnterior; 
+                closeModal();
+            };
+            
+            document.getElementById('custom-modal').classList.add('active');
         }
 
         function renderTable() {
@@ -510,9 +602,13 @@
             dbOrders.forEach((order, index) => {
                 if(!order.guia) pendientes++;
                 const tr = document.createElement('tr');
-                let estadoClass = "status-ingresado";
-                let estadoText = "Ingresado";
-                if(order.guia) { estadoClass = "status-despachado"; estadoText = "Despachado"; }
+                
+                let estadoActual = (order.estado || 'NUEVO').toUpperCase();
+                let selectClass = "nuevo";
+                if (estadoActual === "PREPARANDO") selectClass = "preparando";
+                if (estadoActual === "DESPACHADO") selectClass = "despachado";
+                if (estadoActual === "ENTREGADO") selectClass = "entregado";
+                if (estadoActual === "CANCELADO") selectClass = "cancelado";
 
                 tr.innerHTML = `
                     <td class="td-id">${order.id}</td>
@@ -524,7 +620,15 @@
                     <td class="truncate-cell" style="font-weight: 600;">${order.producto}</td>
                     <td class="text-center"><span class="td-cant">${order.cantidad}</span></td>
                     <td class="td-price">${formatCurrency(order.precioUnitario)}</td>
-                    <td class="text-center"><span class="status-badge ${estadoClass}">${estadoText}</span></td>
+                    <td class="text-center">
+                        <select class="status-select ${selectClass}" data-old-value="${estadoActual}" onchange="confirmarCambioEstado('${order.id}', this, '${order.telefono}', '${order.cliente}')">
+                            <option value="NUEVO" ${estadoActual === 'NUEVO' ? 'selected' : ''}>NUEVO</option>
+                            <option value="PREPARANDO" ${estadoActual === 'PREPARANDO' ? 'selected' : ''}>PREPARANDO</option>
+                            <option value="DESPACHADO" ${estadoActual === 'DESPACHADO' ? 'selected' : ''}>DESPACHADO</option>
+                            <option value="ENTREGADO" ${estadoActual === 'ENTREGADO' ? 'selected' : ''}>ENTREGADO</option>
+                            <option value="CANCELADO" ${estadoActual === 'CANCELADO' ? 'selected' : ''}>CANCELADO</option>
+                        </select>
+                    </td>
                     <td class="text-center">
                         ${order.linkPago && order.linkPago.includes('http') ? 
                           `<a href="${order.linkPago}" target="_blank" class="link-soporte"><i class="fa-solid fa-receipt"></i> Soporte</a>` 
@@ -567,37 +671,6 @@
                           : `<span class="no-soporte">Sin foto</span>`}
                     </td>
                     <td class="text-center"><span class="status-badge ${estadoClass}">${pqr.estado}</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function renderCRM() {
-            const tbody = document.getElementById('crm-table-body');
-            tbody.innerHTML = '';
-            if (dbCRM.length === 0) return tbody.innerHTML = `<tr><td colspan="9" class="loader-container" style="color: #94a3b8;">No hay clientes en el CRM aún.</td></tr>`;
-
-            dbCRM.forEach(cliente => {
-                const tr = document.createElement('tr');
-                
-                // Color de etiqueta según estado (Nuevo, Recurrente, Frío)
-                let etiquetaClass = 'status-ingresado'; // Gris para "Nuevo"
-                let etqStr = cliente.etiqueta.toLowerCase();
-                if (etqStr === 'recurrente') etiquetaClass = 'status-despachado'; // Verde
-                if (etqStr === 'frío' || etqStr === 'frio') etiquetaClass = 'status-pendiente'; // Amarillo/Naranja
-                
-                let campanaClass = cliente.campana.toUpperCase() === 'SI' ? 'status-despachado' : 'status-ingresado';
-
-                tr.innerHTML = `
-                    <td class="td-id" style="width:auto;"><i class="fa-brands fa-whatsapp" style="color: #25D366; font-size:14px; margin-right:4px;"></i> ${cliente.telefono}</td>
-                    <td class="td-cliente">${cliente.nombre}</td>
-                    <td>${cliente.ciudad}</td>
-                    <td class="td-contact truncate-cell"><i class="fa-solid fa-envelope"></i> ${cliente.correo}</td>
-                    <td class="text-center"><span class="td-cant">${cliente.totalCompras}</span></td>
-                    <td class="td-price">${formatCurrency(cliente.totalGastado)}</td>
-                    <td class="truncate-cell">${cliente.ultimaCompra}</td>
-                    <td class="text-center"><span class="status-badge ${etiquetaClass}">${cliente.etiqueta}</span></td>
-                    <td class="text-center"><span class="status-badge ${campanaClass}">${cliente.campana}</span></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -739,7 +812,7 @@
                 }
                 
                 const trTotal = document.createElement('tr');
-                trTotal.style.backgroundColor = '#dcfce7'; // Fondo verde claro
+                trTotal.style.backgroundColor = '#dcfce7'; 
                 trTotal.innerHTML = `
                     <td style="font-weight: 800; color: #16a34a; text-align: right; text-transform: uppercase;">Total General (Rango):</td>
                     <td class="text-center"><span class="td-cant" style="background: #16a34a; color: white;">${totalProductos}</span></td>
@@ -752,8 +825,19 @@
 
         function gestionarMoto(orderId, index) {
             const order = dbOrders[index];
-            const msgDomi = `🛵 *NUEVO DOMICILIO*\n\n*Cliente:* ${order.cliente}\n*Celular:* ${order.telefono}\n*Ciudad:* ${order.ciudad}\n*Dirección:* ${order.direccion}\n*Pedido:* ${order.id}\n*Artículo:* ${order.producto} (Cant: ${order.cantidad})\n\nPor favor confirmar recibido.`;
+            const msgDomi = `🛵 *NUEVO DOMICILIO BOT-⏻N*\n\n*Cliente:* ${order.cliente}\n*Celular:* ${order.telefono}\n*Ciudad:* ${order.ciudad}\n*Dirección:* ${order.direccion}\n*Pedido:* ${order.id}\n*Artículo:* ${order.producto} (Cant: ${order.cantidad})\n\nPor favor confirmar recibido.`;
             window.open(`https://wa.me/${NUMERO_DOMICILIARIO}?text=${encodeURIComponent(msgDomi)}`, '_blank');
+            
+            document.getElementById('modal-title').textContent = '¡Datos enviados!';
+            document.getElementById('modal-message').innerHTML = `Se abrió WhatsApp para enviar los datos a la moto.\n\nEl sistema ahora habilitará el botón verde para notificar al cliente.`;
+            document.getElementById('modal-icon').className = 'modal-icon success';
+            document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-check"></i>';
+            document.getElementById('modal-input-group').style.display = 'none';
+            document.getElementById('modal-btn-cancel').style.display = 'none';
+            document.getElementById('modal-btn-primary').textContent = "Entendido";
+            document.getElementById('modal-btn-primary').onclick = closeModal;
+            document.getElementById('custom-modal').classList.add('active');
+
             dbOrders[index].guia = "MOTO-" + orderId;
             renderTable(); 
         }
@@ -771,6 +855,8 @@
 
             document.getElementById('modal-title').textContent = 'Datos Copiados';
             document.getElementById('modal-message').innerHTML = `He copiado los datos de **${order.cliente}**.\n\nPega los datos en tu transportadora y escribe aquí la guía generada:`;
+            document.getElementById('modal-icon').className = 'modal-icon info';
+            document.getElementById('modal-icon').innerHTML = '<i class="fa-solid fa-paste"></i>';
             document.getElementById('modal-input-group').style.display = 'block';
             document.getElementById('modal-input-guia').value = "";
             document.getElementById('modal-btn-cancel').style.display = 'block';
@@ -799,6 +885,7 @@
             } else {
                 mensaje += `🚚 Tu pedido fue enviado por transportadora nacional.\n*Número de Guía:* ${order.guia}`;
             }
+            mensaje += `\n\nGracias por confiar en *Bot-⏻n*. ✨`;
             let telefono = order.telefono.toString().replace(/\D/g, '');
             if (telefono.length === 10) { telefono = '57' + telefono; }
             window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, '_blank');
