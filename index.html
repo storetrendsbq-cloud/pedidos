@@ -38,8 +38,8 @@
 
         /* PESTAÑAS Y NAVEGACIÓN */
         main { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; padding: 24px 32px; }
-        .tabs-container { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); flex-shrink: 0; overflow-x: auto; white-space: nowrap;}
-        .tab-btn { padding: 12px 20px; background: none; border: none; font-size: 14px; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; margin-bottom: -2px;}
+        .tabs-container { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); flex-shrink: 0;}
+        .tab-btn { padding: 12px 24px; background: none; border: none; font-size: 15px; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; margin-bottom: -2px;}
         .tab-btn:hover { color: var(--primary); }
         .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
         .tab-content { display: none; flex-direction: column; flex-grow: 1; overflow: hidden; }
@@ -79,7 +79,7 @@
         
         table { width: 100%; border-collapse: collapse; min-width: 1300px; }
         #liq-table { min-width: 100%; }
-        #crm-table { min-width: 1000px; }
+        #crm-table { min-width: 1100px; }
         th, td { padding: 12px 16px; text-align: left; font-size: 12px; border-bottom: 1px solid var(--border-color); }
         th { position: sticky; top: 0; background-color: #f8fafc; font-weight: 700; color: var(--text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; white-space: nowrap; z-index: 2; box-shadow: 0 1px 0 var(--border-color); }
         tbody tr:hover { background-color: #f1f5f9; transition: background 0.2s; }
@@ -98,11 +98,6 @@
         .status-despachado { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
         .status-pendiente { background-color: #fef08a; color: #b45309; border: 1px solid #fde047; }
         
-        /* Etiquetas de CRM */
-        .crm-nuevo { background-color: #e0e7ff; color: #4338ca; border: 1px solid #c7d2fe; }
-        .crm-recurrente { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
-        .crm-frio { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
-
         .link-soporte { display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: #2563eb; font-weight: 600; text-decoration: none; background: #eff6ff; padding: 6px 12px; border-radius: 6px; transition: all 0.2s; white-space: nowrap; font-size: 11px;}
         .link-soporte:hover { background: #dbeafe; color: #1d4ed8; }
         .no-soporte { color: #94a3b8; font-style: italic; font-size: 11px; white-space: nowrap;}
@@ -165,11 +160,11 @@
     </header>
 
     <main>
-        <!-- NAVEGACIÓN DE PESTAÑAS -->
+        <!-- NAVEGACIÓN DE PESTAÑAS (Ahora con CRM) -->
         <div class="tabs-container">
             <button class="tab-btn active" onclick="switchTab('pedidos', this)"><i class="fa-solid fa-box"></i> Pedidos</button>
-            <button class="tab-btn" onclick="switchTab('pqr', this)"><i class="fa-solid fa-headset"></i> PQR</button>
-            <button class="tab-btn" onclick="switchTab('crm', this)"><i class="fa-solid fa-users-viewfinder"></i> CRM Clientes</button>
+            <button class="tab-btn" onclick="switchTab('pqr', this)"><i class="fa-solid fa-headset"></i> Gestión PQR</button>
+            <button class="tab-btn" onclick="switchTab('crm', this)"><i class="fa-solid fa-users"></i> CRM Clientes</button>
             <button class="tab-btn" onclick="switchTab('stats', this)"><i class="fa-solid fa-chart-pie"></i> Estadísticas y Cierres</button>
         </div>
 
@@ -256,37 +251,13 @@
             </div>
         </div>
 
-        <!-- TAB 3: CRM Clientes -->
+        <!-- TAB 3: CRM -->
         <div id="tab-crm" class="tab-content">
-            <div class="kpi-grid" style="margin-bottom: 16px;">
-                <div class="kpi-card">
-                    <div class="kpi-info">
-                        <h3>Total Clientes</h3>
-                        <p id="kpi-crm-total">--</p>
-                    </div>
-                    <div class="kpi-icon icon-blue"><i class="fa-solid fa-users"></i></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-info">
-                        <h3>Clientes Recurrentes</h3>
-                        <p id="kpi-crm-recurrentes" style="color: #15803d;">--</p>
-                    </div>
-                    <div class="kpi-icon icon-green"><i class="fa-solid fa-arrow-rotate-right"></i></div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-info">
-                        <h3>Clientes Fríos (+30 días)</h3>
-                        <p id="kpi-crm-frios" style="color: #b91c1c;">--</p>
-                    </div>
-                    <div class="kpi-icon icon-orange"><i class="fa-solid fa-snowflake"></i></div>
-                </div>
-            </div>
-
             <div class="table-section">
                 <div class="table-header">
                     <div class="table-header-title">
-                        <i class="fa-solid fa-address-book" style="color: var(--primary); font-size: 18px;"></i>
-                        <h2>Base de Datos Inteligente</h2>
+                        <i class="fa-solid fa-users" style="color: var(--primary); font-size: 18px;"></i>
+                        <h2>Base de Datos de Clientes (CRM)</h2>
                     </div>
                 </div>
                 <div class="table-container">
@@ -297,14 +268,15 @@
                                 <th>Nombre</th>
                                 <th>Ciudad</th>
                                 <th>Correo</th>
-                                <th class="text-center">Compras</th>
+                                <th class="text-center">Total Compras</th>
                                 <th>Total Gastado</th>
                                 <th>Última Compra</th>
                                 <th class="text-center">Etiqueta</th>
+                                <th class="text-center">Campaña 30D</th>
                             </tr>
                         </thead>
                         <tbody id="crm-table-body">
-                            <!-- Datos CRM -->
+                            <!-- Datos CRM inyectados -->
                         </tbody>
                     </table>
                 </div>
@@ -331,6 +303,13 @@
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-info">
+                        <h3>Clientes Recurrentes</h3>
+                        <p id="kpi-recurrentes">0%</p>
+                    </div>
+                    <div class="kpi-icon icon-purple"><i class="fa-solid fa-users"></i></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info">
                         <h3>Horario Pico Ventas</h3>
                         <p id="kpi-hora">--:--</p>
                     </div>
@@ -347,10 +326,10 @@
                     </div>
                     <div class="date-picker-container">
                         <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Desde:</span>
-                        <input type="date" id="liq-date-start" class="date-input">
+                        <input type="date" id="liq-date-start" class="date-input" onchange="calcularLiquidacion()">
                         
                         <span style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-left: 8px;">Hasta:</span>
-                        <input type="date" id="liq-date-end" class="date-input">
+                        <input type="date" id="liq-date-end" class="date-input" onchange="calcularLiquidacion()">
                         
                         <button class="btn-calc" onclick="calcularLiquidacion()" style="margin-left: 8px;">
                             <i class="fa-solid fa-rotate-right"></i> Calcular Totales
@@ -367,7 +346,7 @@
                             </tr>
                         </thead>
                         <tbody id="liq-table-body">
-                            <tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">Haz clic en "Calcular Totales" para ver el consolidado.</td></tr>
+                            <tr><td colspan="3" class="text-center" style="color: #94a3b8; padding: 40px;">Selecciona el rango de fechas y haz clic en calcular.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -393,16 +372,448 @@
 
     <script>
         // ==========================================
-        // ⚠️ REEMPLAZA ESTA URL CON TU NUEVA IMPLEMENTACIÓN DE APPS SCRIPT
+        // ⚠️ REEMPLAZA ESTA URL CON TU NUEVA IMPLEMENTACIÓN
         // ==========================================
         const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxkYS-qYayFigZzo76gJLT9SwCQLo83SY1ZeOJjSpVtXH4gW_A3LRnCot3Sc_85bnCB_A/exec?action=getPedidos";
-        
         const GOOGLE_URL_PQR = GOOGLE_WEB_APP_URL.replace("getPedidos", "getPQR");
-        const GOOGLE_URL_CRM = GOOGLE_WEB_APP_URL.replace("getPedidos", "getCRM");
+        const GOOGLE_URL_CRM = GOOGLE_WEB_APP_URL.replace("getPedidos", "getCRM"); // Nueva URL para CRM
         const NUMERO_DOMICILIARIO = "573054813630"; 
 
         let dbOrders = [];
         let dbPQRs = [];
-        let dbCRM = [];
+        let dbCRM = []; // Base de datos del CRM
         
-        const formatCurrency = (val) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP',
+        const formatCurrency = (val) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(val);
+
+        // Control de Pestañas
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            btnElement.classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
+        }
+
+        // CARGAR DATOS MULTIPLES (Pedidos, PQR y CRM)
+        async function cargarPedidosDesdeGoogle() {
+            document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="12" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando Pedidos...</p></td></tr>`;
+            document.getElementById('pqr-table-body').innerHTML = `<tr><td colspan="8" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando PQR...</p></td></tr>`;
+            document.getElementById('crm-table-body').innerHTML = `<tr><td colspan="9" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando CRM...</p></td></tr>`;
+            
+            try {
+                const [resPedidos, resPQR, resCRM] = await Promise.all([
+                    fetch(GOOGLE_WEB_APP_URL, { redirect: "follow" }).catch(()=>null),
+                    fetch(GOOGLE_URL_PQR, { redirect: "follow" }).catch(()=>null),
+                    fetch(GOOGLE_URL_CRM, { redirect: "follow" }).catch(()=>null)
+                ]);
+
+                // Procesar Pedidos
+                if (resPedidos && resPedidos.ok) {
+                    const datosExcel = await resPedidos.json();
+                    dbOrders = datosExcel.filter(fila => fila['Número de Pedido'] || fila['# Pedido'] || Object.values(fila)[1]).reverse().map((fila, i) => {
+                        let buscar = (palabras) => {
+                            for(let key in fila) {
+                                let keyL = key.toLowerCase();
+                                if(palabras.some(p => keyL.includes(p))) return fila[key];
+                            }
+                            return null;
+                        };
+
+                        return {
+                            id: buscar(['pedido', 'id']) || Object.values(fila)[1] || (i+1),
+                            cliente: buscar(['cliente', 'nombre']) || Object.values(fila)[8] || 'Sin nombre',
+                            telefono: buscar(['tel', 'cel']) || Object.values(fila)[10] || 'Sin teléfono',
+                            correo: buscar(['correo', 'email']) || Object.values(fila)[9] || 'Sin correo',
+                            ciudad: buscar(['ciudad']) || Object.values(fila)[12] || '',
+                            direccion: buscar(['direc']) || Object.values(fila)[11] || '',
+                            producto: buscar(['producto', 'ref']) || Object.values(fila)[3] || 'Producto',
+                            cantidad: parseInt(buscar(['cant'])) || parseInt(Object.values(fila)[4]) || 1,
+                            precioUnitario: parseFloat(String(buscar(['precio unitario', 'precio']) || Object.values(fila)[5] || '0').replace(/\D/g, '')) || 0,
+                            fecha: buscar(['fecha', 'date']) || Object.values(fila)[2] || '',
+                            linkPago: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
+                            guia: buscar(['guia', 'guía']) ? buscar(['guia', 'guía']) : null
+                        };
+                    });
+                    renderTable();
+                    calcularKPIs();
+                    calcularLiquidacion();
+                }
+
+                // Procesar PQR
+                if (resPQR && resPQR.ok) {
+                    const datosPQR = await resPQR.json();
+                    dbPQRs = datosPQR.filter(fila => fila['Número Pedido'] || fila['ID Pedido'] || Object.values(fila)[0]).reverse().map(fila => {
+                        let buscar = (palabras) => {
+                            for(let key in fila) {
+                                let keyL = key.toLowerCase();
+                                if(palabras.some(p => keyL.includes(p))) return fila[key];
+                            }
+                            return null;
+                        };
+                        return {
+                            idPedido: buscar(['pedido', 'id']) || Object.values(fila)[0],
+                            fecha: buscar(['fecha']) || Object.values(fila)[1] || '',
+                            novedad: buscar(['novedad', 'tipo']) || Object.values(fila)[2] || '',
+                            cliente: buscar(['cliente', 'nombre']) || Object.values(fila)[7] || '',
+                            telefono: buscar(['tel', 'cel']) || Object.values(fila)[9] || '',
+                            descripcion: buscar(['desc']) || Object.values(fila)[6] || '',
+                            evidencia: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
+                            estado: buscar(['estado']) || Object.values(fila)[15] || ''
+                        };
+                    });
+                    renderPQR();
+                }
+
+                // Procesar CRM
+                if (resCRM && resCRM.ok) {
+                    const datosCRM = await resCRM.json();
+                    dbCRM = datosCRM.filter(fila => fila['Teléfono'] || fila['Telefono'] || Object.values(fila)[0]).map(fila => {
+                        let buscar = (palabras) => {
+                            for(let key in fila) {
+                                let keyL = key.toLowerCase();
+                                if(palabras.some(p => keyL.includes(p))) return fila[key];
+                            }
+                            return null;
+                        };
+                        return {
+                            telefono: buscar(['teléfono', 'tel']) || Object.values(fila)[0] || '',
+                            nombre: buscar(['nombre']) || Object.values(fila)[1] || '',
+                            ciudad: buscar(['ciudad']) || Object.values(fila)[2] || '',
+                            correo: buscar(['correo', 'email']) || Object.values(fila)[3] || '',
+                            totalCompras: parseInt(buscar(['compras'])) || Object.values(fila)[4] || 0,
+                            totalGastado: parseFloat(String(buscar(['gastado']) || Object.values(fila)[5] || '0').replace(/\D/g, '')) || 0,
+                            ultimaCompra: buscar(['última', 'ultima', 'fecha']) || Object.values(fila)[6] || '',
+                            etiqueta: buscar(['etiqueta']) || Object.values(fila)[7] || '',
+                            campana: buscar(['campaña', 'campana']) || Object.values(fila)[8] || ''
+                        };
+                    });
+                    // Invertir para mostrar los últimos registrados arriba
+                    dbCRM.reverse();
+                    renderCRM();
+                }
+
+            } catch (error) {
+                console.error("Error cargando datos:", error);
+            }
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('orders-table-body');
+            tbody.innerHTML = '';
+            let pendientes = 0;
+
+            if (dbOrders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="12" class="loader-container" style="color: #94a3b8;">No se encontraron pedidos.</td></tr>`;
+                document.getElementById('kpi-pendientes').textContent = "0";
+                return;
+            }
+
+            dbOrders.forEach((order, index) => {
+                if(!order.guia) pendientes++;
+                const tr = document.createElement('tr');
+                let estadoClass = "status-ingresado";
+                let estadoText = "Ingresado";
+                if(order.guia) { estadoClass = "status-despachado"; estadoText = "Despachado"; }
+
+                tr.innerHTML = `
+                    <td class="td-id">${order.id}</td>
+                    <td class="td-cliente truncate-cell">${order.cliente}</td>
+                    <td class="td-contact"><i class="fa-solid fa-phone"></i> ${order.telefono}</td>
+                    <td class="td-contact truncate-cell"><i class="fa-solid fa-envelope"></i> ${order.correo}</td>
+                    <td class="truncate-cell">${order.ciudad}</td>
+                    <td class="td-contact truncate-cell"><i class="fa-solid fa-location-dot"></i> ${order.direccion}</td>
+                    <td class="truncate-cell" style="font-weight: 600;">${order.producto}</td>
+                    <td class="text-center"><span class="td-cant">${order.cantidad}</span></td>
+                    <td class="td-price">${formatCurrency(order.precioUnitario)}</td>
+                    <td class="text-center"><span class="status-badge ${estadoClass}">${estadoText}</span></td>
+                    <td class="text-center">
+                        ${order.linkPago && order.linkPago.includes('http') ? 
+                          `<a href="${order.linkPago}" target="_blank" class="link-soporte"><i class="fa-solid fa-receipt"></i> Soporte</a>` 
+                          : `<span class="no-soporte">Sin soporte</span>`}
+                    </td>
+                    <td class="text-center">
+                        <div class="action-container">
+                            ${!order.guia ? `
+                                <button onclick="solicitarGuiaReal('${order.id}', ${index})" class="btn-action btn-guia"><i class="fa-solid fa-truck-fast"></i> Guía Nac.</button>
+                                <button onclick="gestionarMoto('${order.id}', ${index})" class="btn-action btn-moto"><i class="fa-brands fa-whatsapp"></i> Moto Domi</button>
+                            ` : `
+                                <button onclick="notificarCliente('${order.id}', ${index})" class="btn-action btn-notify"><i class="fa-brands fa-whatsapp"></i> Notificar Cliente</button>
+                            `}
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            document.getElementById('kpi-pendientes').textContent = pendientes;
+        }
+
+        function renderPQR() {
+            const tbody = document.getElementById('pqr-table-body');
+            tbody.innerHTML = '';
+            if (dbPQRs.length === 0) return tbody.innerHTML = `<tr><td colspan="8" class="loader-container" style="color: #94a3b8;">No hay PQR registrados.</td></tr>`;
+
+            dbPQRs.forEach(pqr => {
+                const tr = document.createElement('tr');
+                let estadoClass = pqr.estado.toLowerCase().includes('resuelto') ? 'status-despachado' : 'status-pendiente';
+                tr.innerHTML = `
+                    <td class="td-id">${pqr.idPedido}</td>
+                    <td>${pqr.fecha}</td>
+                    <td style="font-weight:600; text-transform:capitalize;">${pqr.novedad}</td>
+                    <td class="td-cliente">${pqr.cliente}</td>
+                    <td class="td-contact"><i class="fa-solid fa-phone"></i> ${pqr.telefono}</td>
+                    <td class="truncate-cell">${pqr.descripcion}</td>
+                    <td class="text-center">
+                        ${pqr.evidencia && pqr.evidencia.includes('http') ? 
+                          `<a href="${pqr.evidencia}" target="_blank" class="link-soporte"><i class="fa-solid fa-image"></i> Ver Foto</a>` 
+                          : `<span class="no-soporte">Sin foto</span>`}
+                    </td>
+                    <td class="text-center"><span class="status-badge ${estadoClass}">${pqr.estado}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderCRM() {
+            const tbody = document.getElementById('crm-table-body');
+            tbody.innerHTML = '';
+            if (dbCRM.length === 0) return tbody.innerHTML = `<tr><td colspan="9" class="loader-container" style="color: #94a3b8;">No hay clientes en el CRM aún.</td></tr>`;
+
+            dbCRM.forEach(cliente => {
+                const tr = document.createElement('tr');
+                
+                // Color de etiqueta según estado (Nuevo, Recurrente, Frío)
+                let etiquetaClass = 'status-ingresado'; // Gris para "Nuevo"
+                let etqStr = cliente.etiqueta.toLowerCase();
+                if (etqStr === 'recurrente') etiquetaClass = 'status-despachado'; // Verde
+                if (etqStr === 'frío' || etqStr === 'frio') etiquetaClass = 'status-pendiente'; // Amarillo/Naranja
+                
+                let campanaClass = cliente.campana.toUpperCase() === 'SI' ? 'status-despachado' : 'status-ingresado';
+
+                tr.innerHTML = `
+                    <td class="td-id" style="width:auto;"><i class="fa-brands fa-whatsapp" style="color: #25D366; font-size:14px; margin-right:4px;"></i> ${cliente.telefono}</td>
+                    <td class="td-cliente">${cliente.nombre}</td>
+                    <td>${cliente.ciudad}</td>
+                    <td class="td-contact truncate-cell"><i class="fa-solid fa-envelope"></i> ${cliente.correo}</td>
+                    <td class="text-center"><span class="td-cant">${cliente.totalCompras}</span></td>
+                    <td class="td-price">${formatCurrency(cliente.totalGastado)}</td>
+                    <td class="truncate-cell">${cliente.ultimaCompra}</td>
+                    <td class="text-center"><span class="status-badge ${etiquetaClass}">${cliente.etiqueta}</span></td>
+                    <td class="text-center"><span class="status-badge ${campanaClass}">${cliente.campana}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function calcularKPIs() {
+            if(dbOrders.length === 0) return;
+            
+            let ingresosTotales = 0;
+            let telefonos = new Set();
+            let horasCount = {};
+
+            dbOrders.forEach(o => {
+                ingresosTotales += (o.precioUnitario * o.cantidad);
+                telefonos.add(o.telefono);
+                
+                if(o.fecha) {
+                    let match = o.fecha.toString().match(/(\d+):(\d+)\s*([ap]\.?m\.?)/i);
+                    if(match) {
+                        let hora = parseInt(match[1]);
+                        let ampm = match[3].toLowerCase().replace(/\./g, '');
+                        if(ampm === 'pm' && hora < 12) hora += 12;
+                        if(ampm === 'am' && hora === 12) hora = 0;
+                        horasCount[hora] = (horasCount[hora] || 0) + 1;
+                    }
+                }
+            });
+
+            const ticket = ingresosTotales / dbOrders.length;
+            const repeticion = ((dbOrders.length - telefonos.size) / dbOrders.length) * 100;
+            
+            let horaPico = "--:--";
+            let maxVentas = 0;
+            for(let h in horasCount) {
+                if(horasCount[h] > maxVentas) {
+                    maxVentas = horasCount[h];
+                    let hInt = parseInt(h);
+                    let formatAmpm = hInt >= 12 ? 'PM' : 'AM';
+                    let hFormat = hInt % 12 || 12;
+                    horaPico = `${hFormat}:00 ${formatAmpm}`;
+                }
+            }
+
+            document.getElementById('kpi-ingresos').textContent = formatCurrency(ingresosTotales);
+            document.getElementById('kpi-ticket').textContent = formatCurrency(ticket);
+            document.getElementById('kpi-recurrentes').textContent = repeticion > 0 ? repeticion.toFixed(1) + "%" : "0%";
+            document.getElementById('kpi-hora').textContent = horaPico;
+        }
+
+        function calcularLiquidacion() {
+            const tableBodyLiq = document.getElementById('liq-table-body');
+            const dateStart = document.getElementById('liq-date-start').value; 
+            const dateEnd = document.getElementById('liq-date-end').value; 
+            
+            if(!dateStart && !dateEnd) return;
+
+            tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="padding: 40px;"><div class="loader" style="width:24px; height:24px; margin:0 auto; border-width:2px;"></div><p style="color:var(--primary); font-weight:600; margin-top:8px;">Consolidando ventas...</p></td></tr>`;
+
+            setTimeout(() => {
+                const dateToNum = (dStr) => {
+                    if(!dStr) return null;
+                    const [y, m, d] = dStr.split('-').map(Number);
+                    return y * 10000 + m * 100 + d;
+                };
+
+                let numStart = dateToNum(dateStart || dateEnd); 
+                let numEnd = dateToNum(dateEnd || dateStart);
+                
+                const rangoInicio = Math.min(numStart, numEnd);
+                const rangoFin = Math.max(numStart, numEnd);
+
+                const parseDateFlexible = (dateStr) => {
+                    if (!dateStr) return null;
+                    let clean = dateStr.toString().toLowerCase().trim();
+                    if(clean.includes('t') || clean.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                        let d = new Date(clean);
+                        if(!isNaN(d)) return { y: d.getFullYear(), m: d.getMonth() + 1, d: d.getDate() };
+                    }
+                    clean = clean.split(',')[0].split(' ')[0];
+                    let parts = clean.includes('/') ? clean.split('/') : clean.split('-');
+                    if (parts.length === 3) {
+                        let p1 = parseInt(parts[0], 10);
+                        let p2 = parseInt(parts[1], 10);
+                        let p3 = parseInt(parts[2], 10);
+                        if (parts[2] && parts[2].toString().length === 4) return { y: p3, m: p2, d: p1 }; 
+                        if (parts[0] && parts[0].toString().length === 4) return { y: p1, m: p2, d: p3 };
+                        return { y: 2000 + p3, m: p2, d: p1 }; 
+                    }
+                    return null;
+                };
+
+                const ventasDia = dbOrders.filter(order => {
+                    const d = parseDateFlexible(order.fecha);
+                    if (d) {
+                        const numOpA = d.y * 10000 + d.m * 100 + d.d; 
+                        const numOpB = d.y * 10000 + d.d * 100 + d.m; 
+                        return (numOpA >= rangoInicio && numOpA <= rangoFin) || 
+                               (numOpB >= rangoInicio && numOpB <= rangoFin);
+                    }
+                    return false;
+                });
+
+                let totalIngresos = 0;
+                let totalProductos = 0;
+                const consolidado = {};
+
+                ventasDia.forEach(order => {
+                    let prodName = (order.producto || 'Producto Genérico').trim();
+                    let cant = parseInt(order.cantidad) || 1;
+                    let pUnit = order.precioUnitario || 0;
+                    let pTotal = cant * pUnit;
+
+                    totalIngresos += pTotal;
+                    totalProductos += cant;
+
+                    if(consolidado[prodName]) {
+                        consolidado[prodName].cant += cant;
+                        consolidado[prodName].ingreso += pTotal;
+                    } else {
+                        consolidado[prodName] = { cant: cant, ingreso: pTotal };
+                    }
+                });
+
+                tableBodyLiq.innerHTML = '';
+                
+                if(Object.keys(consolidado).length === 0) {
+                    tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #94a3b8; font-weight:600; padding: 40px;">No hay ventas registradas en las fechas seleccionadas.</td></tr>`;
+                    return;
+                }
+
+                for (const [prod, datos] of Object.entries(consolidado)) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight: 700; color: #0f172a;">${prod}</td>
+                        <td class="text-center"><span class="td-cant">${datos.cant}</span></td>
+                        <td class="td-price">${formatCurrency(datos.ingreso)}</td>
+                    `;
+                    tableBodyLiq.appendChild(tr);
+                }
+                
+                const trTotal = document.createElement('tr');
+                trTotal.style.backgroundColor = '#dcfce7'; // Fondo verde claro
+                trTotal.innerHTML = `
+                    <td style="font-weight: 800; color: #16a34a; text-align: right; text-transform: uppercase;">Total General (Rango):</td>
+                    <td class="text-center"><span class="td-cant" style="background: #16a34a; color: white;">${totalProductos}</span></td>
+                    <td class="td-price" style="font-size: 16px; font-weight: 800; color: #15803d;">${formatCurrency(totalIngresos)}</td>
+                `;
+                tableBodyLiq.appendChild(trTotal);
+                
+            }, 350); 
+        }
+
+        function gestionarMoto(orderId, index) {
+            const order = dbOrders[index];
+            const msgDomi = `🛵 *NUEVO DOMICILIO*\n\n*Cliente:* ${order.cliente}\n*Celular:* ${order.telefono}\n*Ciudad:* ${order.ciudad}\n*Dirección:* ${order.direccion}\n*Pedido:* ${order.id}\n*Artículo:* ${order.producto} (Cant: ${order.cantidad})\n\nPor favor confirmar recibido.`;
+            window.open(`https://wa.me/${NUMERO_DOMICILIARIO}?text=${encodeURIComponent(msgDomi)}`, '_blank');
+            dbOrders[index].guia = "MOTO-" + orderId;
+            renderTable(); 
+        }
+
+        function solicitarGuiaReal(orderId, index) {
+            const order = dbOrders[index];
+            const datosParaTransportadora = `Cliente: ${order.cliente}\nCelular: ${order.telefono}\nCiudad: ${order.ciudad}\nDirección: ${order.direccion}\nPaquete: ${order.cantidad} x ${order.producto}`;
+            
+            const textarea = document.createElement("textarea");
+            textarea.value = datosParaTransportadora;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+
+            document.getElementById('modal-title').textContent = 'Datos Copiados';
+            document.getElementById('modal-message').innerHTML = `He copiado los datos de **${order.cliente}**.\n\nPega los datos en tu transportadora y escribe aquí la guía generada:`;
+            document.getElementById('modal-input-group').style.display = 'block';
+            document.getElementById('modal-input-guia').value = "";
+            document.getElementById('modal-btn-cancel').style.display = 'block';
+            
+            const btnPrimary = document.getElementById('modal-btn-primary');
+            btnPrimary.textContent = "Guardar Guía";
+            btnPrimary.onclick = () => {
+                const guia = document.getElementById('modal-input-guia').value;
+                if(guia.trim() !== "") {
+                    dbOrders[index].guia = guia.trim();
+                    renderTable();
+                    closeModal();
+                } else {
+                    document.getElementById('modal-input-guia').style.borderColor = "red";
+                }
+            };
+            document.getElementById('custom-modal').classList.add('active');
+            document.getElementById('modal-input-guia').focus();
+        }
+
+        function notificarCliente(orderId, index) {
+            const order = dbOrders[index];
+            let mensaje = `¡Hola ${order.cliente}! 👋\n\nTe confirmamos que tu pedido *${order.id}* ya fue despachado. 📦\n\n`;
+            if (order.guia && order.guia.startsWith('MOTO')) {
+                mensaje += `🛵 Tu pedido va en camino con nuestro domiciliario a la dirección: ${order.direccion}.`;
+            } else {
+                mensaje += `🚚 Tu pedido fue enviado por transportadora nacional.\n*Número de Guía:* ${order.guia}`;
+            }
+            let telefono = order.telefono.toString().replace(/\D/g, '');
+            if (telefono.length === 10) { telefono = '57' + telefono; }
+            window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`, '_blank');
+        }
+
+        function closeModal() { 
+            document.getElementById('custom-modal').classList.remove('active'); 
+            document.getElementById('modal-input-guia').style.borderColor = "#e2e8f0";
+        }
+
+        const hoy = new Date();
+        document.getElementById('liq-date-start').valueAsDate = hoy;
+        document.getElementById('liq-date-end').valueAsDate = hoy;
+
+        window.onload = cargarPedidosDesdeGoogle;
+    </script>
+</body>
+</html>
