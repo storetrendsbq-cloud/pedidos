@@ -435,7 +435,7 @@
                             fecha: buscar(['fecha', 'date']) || Object.values(fila)[2] || '',
                             linkPago: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
                             guia: buscar(['guia', 'guía']) ? buscar(['guia', 'guía']) : null,
-                            estado: buscar(['estado']) || 'NUEVO'
+                            estado: buscar(['estado']) || Object.values(fila)[15] || '''
                         };
                     });
                     renderTable();
