@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store Trends | Centro de Despachos</title>
+    <title>Store Trends | ERP Web</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -36,7 +36,7 @@
         .btn-sync { background-color: white; border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text-main); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
         .btn-sync:hover { background-color: #f1f5f9; border-color: #cbd5e1; }
 
-        /* CONTENIDO PRINCIPAL Y PESTAÑAS */
+        /* PESTAÑAS Y NAVEGACIÓN */
         main { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; padding: 24px 32px; }
         .tabs-container { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); flex-shrink: 0;}
         .tab-btn { padding: 12px 24px; background: none; border: none; font-size: 15px; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; margin-bottom: -2px;}
@@ -46,52 +46,30 @@
         .tab-content.active { display: flex; }
         
         /* KPIs */
-        .kpi-grid { display: flex; gap: 24px; margin-bottom: 24px; flex-shrink: 0;}
-        .kpi-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px 24px; flex: 1; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .kpi-grid { display: flex; gap: 24px; margin-bottom: 24px; flex-shrink: 0; flex-wrap: wrap;}
+        .kpi-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px 24px; flex: 1; min-width: 220px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .kpi-info h3 { font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-        .kpi-info p { font-size: 28px; font-weight: 800; color: #0f172a; line-height: 1; }
-        .kpi-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .kpi-info p { font-size: 26px; font-weight: 800; color: #0f172a; line-height: 1; }
+        .kpi-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;}
         .icon-orange { background-color: #ffedd5; color: #ea580c; }
         .icon-green { background-color: #dcfce7; color: #16a34a; }
         .icon-blue { background-color: #dbeafe; color: #2563eb; }
+        .icon-purple { background-color: #f3e8ff; color: #9333ea; }
         .status-dot { display: inline-block; width: 10px; height: 10px; background-color: #22c55e; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 0 3px #dcfce7; }
 
         /* TABLAS Y HERRAMIENTAS */
-        .table-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
+        .table-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; margin-bottom: 20px;}
         .table-header { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; background: #f8fafc; }
         .table-header-title { display: flex; align-items: center; gap: 12px; }
         .table-header h2 { font-size: 15px; font-weight: 700; color: #0f172a; }
         
-        .date-picker-container { display: flex; align-items: center; gap: 12px; }
+        .date-picker-container { display: flex; align-items: center; gap: 12px; flex-wrap: wrap;}
         .date-input { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; font-weight: 600; color: #0f172a; outline: none; }
         .date-input:focus { border-color: var(--primary); }
         
-        /* BOTÓN DE CALCULAR MEJORADO (EFECTO TÁCTIL) */
-        .btn-calc { 
-            background: var(--primary); 
-            color: white; 
-            border: none; 
-            padding: 8px 16px; 
-            border-radius: 8px; 
-            font-size: 14px;
-            font-weight: 700; 
-            cursor: pointer; 
-            transition: all 0.15s ease-in-out;
-            box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-calc:hover { 
-            background: var(--primary-hover); 
-            transform: translateY(-2px); 
-            box-shadow: 0 6px 8px -1px rgba(13, 148, 136, 0.3);
-        }
-        .btn-calc:active { 
-            background: var(--primary-active);
-            transform: translateY(2px); 
-            box-shadow: 0 1px 2px -1px rgba(13, 148, 136, 0.3);
-        }
+        .btn-calc { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s ease-in-out; box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.2); display: flex; align-items: center; gap: 8px; }
+        .btn-calc:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 8px -1px rgba(13, 148, 136, 0.3); }
+        .btn-calc:active { background: var(--primary-active); transform: translateY(2px); box-shadow: 0 1px 2px -1px rgba(13, 148, 136, 0.3); }
 
         .table-container { width: 100%; overflow: auto; flex-grow: 1; }
         .table-container::-webkit-scrollbar { width: 8px; height: 8px; }
@@ -99,7 +77,7 @@
         .table-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .table-container::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
-        table { width: 100%; border-collapse: collapse; min-width: 1400px; }
+        table { width: 100%; border-collapse: collapse; min-width: 1300px; }
         #liq-table { min-width: 100%; }
         th, td { padding: 12px 16px; text-align: left; font-size: 12px; border-bottom: 1px solid var(--border-color); }
         th { position: sticky; top: 0; background-color: #f8fafc; font-weight: 700; color: var(--text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; white-space: nowrap; z-index: 2; box-shadow: 0 1px 0 var(--border-color); }
@@ -165,7 +143,7 @@
                 <img src="https://static.wixstatic.com/media/d0ce54_be38c6945e9b4076a0c659ffaa864d84~mv2.png" alt="Store Trends Logo" class="logo-img" />
                 <div class="logo-text">Bot-On.</div>
             </div>
-            <div class="page-title">Centro de Despachos</div>
+            <div class="page-title">Plataforma ERP Web</div>
         </div>
         <div class="header-right">
             <button class="btn-sync" onclick="cargarPedidosDesdeGoogle()">
@@ -185,12 +163,12 @@
         <div class="tabs-container">
             <button class="tab-btn active" onclick="switchTab('pedidos', this)"><i class="fa-solid fa-box"></i> Pedidos</button>
             <button class="tab-btn" onclick="switchTab('pqr', this)"><i class="fa-solid fa-headset"></i> Gestión PQR</button>
-            <button class="tab-btn" onclick="switchTab('liq', this)"><i class="fa-solid fa-chart-line"></i> Liquidación de Ventas</button>
+            <button class="tab-btn" onclick="switchTab('stats', this)"><i class="fa-solid fa-chart-pie"></i> Estadísticas y Cierres</button>
         </div>
 
         <!-- TAB 1: PEDIDOS -->
         <div id="tab-pedidos" class="tab-content active">
-            <div class="kpi-grid">
+            <div class="kpi-grid" style="margin-bottom: 16px;">
                 <div class="kpi-card">
                     <div class="kpi-info">
                         <h3>Pendientes de Guía / Envío</h3>
@@ -225,9 +203,8 @@
                                 <th>Ciudad</th>
                                 <th>Dirección</th>
                                 <th>Nombre del Producto</th>
-                                <th>Cantidad</th>
-                                <th>Precio Unitario</th>
                                 <th class="text-center">Cant.</th>
+                                <th>Precio Unitario</th>
                                 <th class="text-center">Estado</th>
                                 <th class="text-center">Soporte Pago</th>
                                 <th class="text-center" style="min-width: 180px;">Acción Logística</th>
@@ -247,7 +224,7 @@
                 <div class="table-header">
                     <div class="table-header-title">
                         <i class="fa-solid fa-triangle-exclamation" style="color: #ea580c; font-size: 18px;"></i>
-                        <h2>Gestión de PQR y Novedades</h2>
+                        <h2>Gestión de PQR y Garantías</h2>
                     </div>
                 </div>
                 <div class="table-container">
@@ -272,30 +249,46 @@
             </div>
         </div>
 
-        <!-- TAB 3: LIQUIDACION (CON RANGO DE FECHAS) -->
-        <div id="tab-liq" class="tab-content">
+        <!-- TAB 3: ESTADÍSTICAS Y LIQUIDACIÓN -->
+        <div id="tab-stats" class="tab-content">
+            <!-- KPIs Avanzados -->
             <div class="kpi-grid">
                 <div class="kpi-card">
                     <div class="kpi-info">
-                        <h3>Total Ingresos del Periodo</h3>
-                        <p id="kpi-liq-total">$0</p>
+                        <h3>Ingresos Totales (Histórico)</h3>
+                        <p id="kpi-ingresos">$0</p>
                     </div>
                     <div class="kpi-icon icon-green"><i class="fa-solid fa-sack-dollar"></i></div>
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-info">
-                        <h3>Total Productos Vendidos</h3>
-                        <p id="kpi-liq-cant">0</p>
+                        <h3>Ticket Promedio</h3>
+                        <p id="kpi-ticket">$0</p>
                     </div>
-                    <div class="kpi-icon icon-blue"><i class="fa-solid fa-tags"></i></div>
+                    <div class="kpi-icon icon-blue"><i class="fa-solid fa-receipt"></i></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info">
+                        <h3>Clientes Recurrentes</h3>
+                        <p id="kpi-recurrentes">0%</p>
+                    </div>
+                    <div class="kpi-icon icon-purple"><i class="fa-solid fa-users"></i></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info">
+                        <h3>Horario Pico Ventas</h3>
+                        <p id="kpi-hora">--:--</p>
+                    </div>
+                    <div class="kpi-icon icon-orange"><i class="fa-regular fa-clock"></i></div>
                 </div>
             </div>
 
+            <!-- Liquidación -->
             <div class="table-section">
                 <div class="table-header">
                     <div class="table-header-title">
                         <i class="fa-solid fa-calculator" style="color: var(--primary); font-size: 18px;"></i>
-                        <h2>Consolidado de Ventas</h2>
+                        <h2>Consolidado Contable (Liquidación)</h2>
                     </div>
                     <div class="date-picker-container">
                         <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Desde:</span>
@@ -345,9 +338,9 @@
 
     <script>
         // ==========================================
-        // ⚠️ PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT
+        // ⚠️ REEMPLAZA ESTA URL CON TU NUEVA IMPLEMENTACIÓN
         // ==========================================
-        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyJtdneZrgKDEj9bJK9rVxEyi3PUuV106Jt0czn1UsiOrUz3KQvyUl9oHplIqOMtj5J2w/exec?action=getPedidos";
+        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz0VSx8NUsuGDlE-cFv7pCF-PZiIB5IR0oPH9b61DMw1wzbw189MnZ0Qr3nAbnMeeH_dQ/exec?action=getPedidos";
         const GOOGLE_URL_PQR = GOOGLE_WEB_APP_URL.replace("getPedidos", "getPQR");
         const NUMERO_DOMICILIARIO = "573054813630"; 
 
@@ -364,9 +357,9 @@
             document.getElementById('tab-' + tabId).classList.add('active');
         }
 
-        // CARGAR DATOS DESDE GOOGLE
+        // CARGAR DATOS
         async function cargarPedidosDesdeGoogle() {
-            document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="13" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando Pedidos...</p></td></tr>`;
+            document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="12" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando Pedidos...</p></td></tr>`;
             document.getElementById('pqr-table-body').innerHTML = `<tr><td colspan="8" class="loader-container"><div class="loader"></div><p style="font-size: 14px; font-weight: 600;">Sincronizando PQR...</p></td></tr>`;
             
             try {
@@ -377,39 +370,55 @@
 
                 if (resPedidos && resPedidos.ok) {
                     const datosExcel = await resPedidos.json();
-                    
                     dbOrders = datosExcel.filter(fila => fila['Número de Pedido'] || fila['# Pedido'] || Object.values(fila)[1]).reverse().map((fila, i) => {
+                        // Buscador inteligente de encabezados
+                        let buscar = (palabras) => {
+                            for(let key in fila) {
+                                let keyL = key.toLowerCase();
+                                if(palabras.some(p => keyL.includes(p))) return fila[key];
+                            }
+                            return null;
+                        };
+
                         return {
-                            id: fila['Número de Pedido'] || fila['# Pedido'] || fila['ID'] || Object.values(fila)[1] || (i+1),
-                            cliente: fila['Nombre del Cliente'] || fila['Nombre completo'] || fila['Cliente'] || Object.values(fila)[8] || 'Sin nombre',
-                            telefono: fila['Teléfono'] || fila['Telefono'] || Object.values(fila)[10] || 'Sin teléfono',
-                            correo: fila['Correo'] || fila['Correo electrónico'] || Object.values(fila)[9] || 'Sin correo',
-                            ciudad: fila['Ciudad'] || Object.values(fila)[12] || '',
-                            direccion: fila['Dirección'] || fila['Direccion'] || Object.values(fila)[11] || '',
-                            producto: fila['Nombre del Producto'] || fila['Producto'] || Object.values(fila)[3] || 'Producto',
-                            cantidad: fila['Cantidad'] || fila['Cant.'] || Object.values(fila)[4] || '1',
-                            precioUnitario: fila['Precio Unitario'] || fila['Precio COP'] || Object.values(fila)[5] || '0',
-                            fecha: fila['Fecha'] || fila['Date'] || Object.values(fila)[2] || '',
+                            id: buscar(['pedido', 'id']) || Object.values(fila)[1] || (i+1),
+                            cliente: buscar(['cliente', 'nombre']) || Object.values(fila)[8] || 'Sin nombre',
+                            telefono: buscar(['tel', 'cel']) || Object.values(fila)[10] || 'Sin teléfono',
+                            correo: buscar(['correo', 'email']) || Object.values(fila)[9] || 'Sin correo',
+                            ciudad: buscar(['ciudad']) || Object.values(fila)[12] || '',
+                            direccion: buscar(['direc']) || Object.values(fila)[11] || '',
+                            producto: buscar(['producto', 'ref']) || Object.values(fila)[3] || 'Producto',
+                            cantidad: parseInt(buscar(['cant'])) || parseInt(Object.values(fila)[4]) || 1,
+                            precioUnitario: parseFloat(String(buscar(['precio unitario', 'precio']) || Object.values(fila)[5] || '0').replace(/\D/g, '')) || 0,
+                            fecha: buscar(['fecha', 'date']) || Object.values(fila)[2] || '',
                             linkPago: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
-                            guia: fila['Guia'] || fila['Guía'] ? (fila['Guia'] || fila['Guía']) : null
+                            guia: buscar(['guia', 'guía']) ? buscar(['guia', 'guía']) : null
                         };
                     });
                     renderTable();
+                    calcularKPIs();
                     calcularLiquidacion();
                 }
 
                 if (resPQR && resPQR.ok) {
                     const datosPQR = await resPQR.json();
                     dbPQRs = datosPQR.filter(fila => fila['Número Pedido'] || fila['ID Pedido'] || Object.values(fila)[0]).reverse().map(fila => {
+                        let buscar = (palabras) => {
+                            for(let key in fila) {
+                                let keyL = key.toLowerCase();
+                                if(palabras.some(p => keyL.includes(p))) return fila[key];
+                            }
+                            return null;
+                        };
                         return {
-                            idPedido: fila['Número Pedido'] || fila['ID Pedido'] || Object.values(fila)[0],
-                            fecha: fila['Fecha de registro de novedad'] || fila['Fecha'] || Object.values(fila)[1] || '',
-                            novedad: fila['Novedad'] || fila['Tipo Novedad'] || Object.values(fila)[2] || '',
-                            cliente: fila['Cliente'] || fila['Nombre'] || Object.values(fila)[7] || '',
-                            telefono: fila['Teléfono'] || fila['Telefono'] || Object.values(fila)[9] || '',
-                            descripcion: fila['Descripcion (Resumida)'] || fila['Descripcion'] || Object.values(fila)[6] || '',
-                            evidencia: fila['Foto evidencia (Drive Real)'] || fila['Foto evidencia'] || Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
-                            estado: fila['Estado (Resuelto / Pendiente)'] || fila['Estado'] || Object.values(fila)[15] || ''
+                            idPedido: buscar(['pedido', 'id']) || Object.values(fila)[0],
+                            fecha: buscar(['fecha']) || Object.values(fila)[1] || '',
+                            novedad: buscar(['novedad', 'tipo']) || Object.values(fila)[2] || '',
+                            cliente: buscar(['cliente', 'nombre']) || Object.values(fila)[7] || '',
+                            telefono: buscar(['tel', 'cel']) || Object.values(fila)[9] || '',
+                            descripcion: buscar(['desc']) || Object.values(fila)[6] || '',
+                            evidencia: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
+                            estado: buscar(['estado']) || Object.values(fila)[15] || ''
                         };
                     });
                     renderPQR();
@@ -417,7 +426,6 @@
 
             } catch (error) {
                 console.error(error);
-                document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="13" class="error-container"><i class="fa-solid fa-triangle-exclamation" style="font-size: 24px; margin-bottom: 8px; display:block;"></i> Error de Conexión.<br><span style="font-size: 12px; font-weight: normal; margin-top: 4px; display: block; color: #64748b;">Verifica tu URL de Google Apps Script.</span></td></tr>`;
             }
         }
 
@@ -428,7 +436,7 @@
             let pendientes = 0;
 
             if (dbOrders.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="13" class="loader-container" style="color: #94a3b8;">No se encontraron pedidos.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="12" class="loader-container" style="color: #94a3b8;">No se encontraron pedidos.</td></tr>`;
                 document.getElementById('kpi-pendientes').textContent = "0";
                 return;
             }
@@ -436,40 +444,33 @@
             dbOrders.forEach((order, index) => {
                 if(!order.guia) pendientes++;
                 const tr = document.createElement('tr');
-                
                 let estadoClass = "status-ingresado";
                 let estadoText = "Ingresado";
-                if(order.guia) {
-                    estadoClass = "status-despachado";
-                    estadoText = "Despachado";
-                }
-
-                let precioLimpio = parseFloat(order.precioUnitario.toString().replace(/\D/g, '')) || 0;
+                if(order.guia) { estadoClass = "status-despachado"; estadoText = "Despachado"; }
 
                 tr.innerHTML = `
-                    <td class="td-id" title="${order.id}">${order.id}</td>
-                    <td class="td-cliente truncate-cell" title="${order.cliente}">${order.cliente}</td>
-                    <td class="td-contact" title="${order.telefono}"><i class="fa-solid fa-phone"></i> ${order.telefono}</td>
-                    <td class="td-contact truncate-cell" title="${order.correo}"><i class="fa-solid fa-envelope"></i> ${order.correo}</td>
-                    <td class="truncate-cell" title="${order.ciudad}">${order.ciudad}</td>
-                    <td class="td-contact truncate-cell" title="${order.direccion}"><i class="fa-solid fa-location-dot"></i> ${order.direccion}</td>
-                    <td class="truncate-cell" title="${order.producto}" style="font-weight: 600;">${order.producto}</td>
+                    <td class="td-id">${order.id}</td>
+                    <td class="td-cliente truncate-cell">${order.cliente}</td>
+                    <td class="td-contact"><i class="fa-solid fa-phone"></i> ${order.telefono}</td>
+                    <td class="td-contact truncate-cell"><i class="fa-solid fa-envelope"></i> ${order.correo}</td>
+                    <td class="truncate-cell">${order.ciudad}</td>
+                    <td class="td-contact truncate-cell"><i class="fa-solid fa-location-dot"></i> ${order.direccion}</td>
+                    <td class="truncate-cell" style="font-weight: 600;">${order.producto}</td>
                     <td class="text-center"><span class="td-cant">${order.cantidad}</span></td>
-                    <td class="td-price">${formatCurrency(precioLimpio)}</td>
-                    <td class="text-center"><span class="td-cant">${order.cantidad}</span></td>
+                    <td class="td-price">${formatCurrency(order.precioUnitario)}</td>
                     <td class="text-center"><span class="status-badge ${estadoClass}">${estadoText}</span></td>
                     <td class="text-center">
                         ${order.linkPago && order.linkPago.includes('http') ? 
-                          `<a href="${order.linkPago}" target="_blank" class="link-soporte" title="Ver comprobante"><i class="fa-solid fa-receipt"></i> Soporte</a>` 
-                          : `<span class="no-soporte"><i class="fa-solid fa-circle-exclamation"></i> Sin soporte</span>`}
+                          `<a href="${order.linkPago}" target="_blank" class="link-soporte"><i class="fa-solid fa-receipt"></i> Soporte</a>` 
+                          : `<span class="no-soporte">Sin soporte</span>`}
                     </td>
                     <td class="text-center">
                         <div class="action-container">
                             ${!order.guia ? `
-                                <button onclick="solicitarGuiaReal('${order.id}', ${index})" class="btn-action btn-guia" title="Generar guía"><i class="fa-solid fa-truck-fast"></i> Guía Nac.</button>
-                                <button onclick="gestionarMoto('${order.id}', ${index})" class="btn-action btn-moto" title="Enviar a Moto"><i class="fa-brands fa-whatsapp"></i> Moto Domi</button>
+                                <button onclick="solicitarGuiaReal('${order.id}', ${index})" class="btn-action btn-guia"><i class="fa-solid fa-truck-fast"></i> Guía Nac.</button>
+                                <button onclick="gestionarMoto('${order.id}', ${index})" class="btn-action btn-moto"><i class="fa-brands fa-whatsapp"></i> Moto Domi</button>
                             ` : `
-                                <button onclick="notificarCliente('${order.id}', ${index})" class="btn-action btn-notify" title="Avisar al cliente"><i class="fa-brands fa-whatsapp"></i> Notificar Cliente</button>
+                                <button onclick="notificarCliente('${order.id}', ${index})" class="btn-action btn-notify"><i class="fa-brands fa-whatsapp"></i> Notificar Cliente</button>
                             `}
                         </div>
                     </td>
@@ -483,22 +484,18 @@
         function renderPQR() {
             const tbody = document.getElementById('pqr-table-body');
             tbody.innerHTML = '';
-            if (dbPQRs.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="loader-container" style="color: #94a3b8;">No hay PQR registrados.</td></tr>`;
-                return;
-            }
+            if (dbPQRs.length === 0) return tbody.innerHTML = `<tr><td colspan="8" class="loader-container" style="color: #94a3b8;">No hay PQR registrados.</td></tr>`;
 
             dbPQRs.forEach(pqr => {
                 const tr = document.createElement('tr');
                 let estadoClass = pqr.estado.toLowerCase().includes('resuelto') ? 'status-despachado' : 'status-pendiente';
-                
                 tr.innerHTML = `
                     <td class="td-id">${pqr.idPedido}</td>
                     <td>${pqr.fecha}</td>
                     <td style="font-weight:600; text-transform:capitalize;">${pqr.novedad}</td>
                     <td class="td-cliente">${pqr.cliente}</td>
                     <td class="td-contact"><i class="fa-solid fa-phone"></i> ${pqr.telefono}</td>
-                    <td class="truncate-cell" title="${pqr.descripcion}">${pqr.descripcion}</td>
+                    <td class="truncate-cell">${pqr.descripcion}</td>
                     <td class="text-center">
                         ${pqr.evidencia && pqr.evidencia.includes('http') ? 
                           `<a href="${pqr.evidencia}" target="_blank" class="link-soporte"><i class="fa-solid fa-image"></i> Ver Foto</a>` 
@@ -510,7 +507,52 @@
             });
         }
 
-        // LIQUIDACIÓN DIARIA INVENCIBLE (POR RANGO DE FECHAS)
+        // KPIs AVANZADOS
+        function calcularKPIs() {
+            if(dbOrders.length === 0) return;
+            
+            let ingresosTotales = 0;
+            let telefonos = new Set();
+            let horasCount = {};
+
+            dbOrders.forEach(o => {
+                ingresosTotales += (o.precioUnitario * o.cantidad);
+                telefonos.add(o.telefono);
+                
+                if(o.fecha) {
+                    let match = o.fecha.toString().match(/(\d+):(\d+)\s*([ap]\.?m\.?)/i);
+                    if(match) {
+                        let hora = parseInt(match[1]);
+                        let ampm = match[3].toLowerCase().replace(/\./g, '');
+                        if(ampm === 'pm' && hora < 12) hora += 12;
+                        if(ampm === 'am' && hora === 12) hora = 0;
+                        horasCount[hora] = (horasCount[hora] || 0) + 1;
+                    }
+                }
+            });
+
+            const ticket = ingresosTotales / dbOrders.length;
+            const repeticion = ((dbOrders.length - telefonos.size) / dbOrders.length) * 100;
+            
+            let horaPico = "--:--";
+            let maxVentas = 0;
+            for(let h in horasCount) {
+                if(horasCount[h] > maxVentas) {
+                    maxVentas = horasCount[h];
+                    let hInt = parseInt(h);
+                    let formatAmpm = hInt >= 12 ? 'PM' : 'AM';
+                    let hFormat = hInt % 12 || 12;
+                    horaPico = `${hFormat}:00 ${formatAmpm}`;
+                }
+            }
+
+            document.getElementById('kpi-ingresos').textContent = formatCurrency(ingresosTotales);
+            document.getElementById('kpi-ticket').textContent = formatCurrency(ticket);
+            document.getElementById('kpi-recurrentes').textContent = repeticion > 0 ? repeticion.toFixed(1) + "%" : "0%";
+            document.getElementById('kpi-hora').textContent = horaPico;
+        }
+
+        // LIQUIDACIÓN CON RANGOS
         function calcularLiquidacion() {
             const tableBodyLiq = document.getElementById('liq-table-body');
             const dateStart = document.getElementById('liq-date-start').value; 
@@ -518,7 +560,7 @@
             
             if(!dateStart && !dateEnd) return;
 
-            tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="padding: 40px;"><div class="loader" style="width:24px; height:24px; margin:0 auto; border-width:2px;"></div><p style="color:var(--primary); font-weight:600; margin-top:8px;">Calculando ventas...</p></td></tr>`;
+            tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="padding: 40px;"><div class="loader" style="width:24px; height:24px; margin:0 auto; border-width:2px;"></div><p style="color:var(--primary); font-weight:600; margin-top:8px;">Consolidando ventas...</p></td></tr>`;
 
             setTimeout(() => {
                 const dateToNum = (dStr) => {
@@ -536,20 +578,16 @@
                 const parseDateFlexible = (dateStr) => {
                     if (!dateStr) return null;
                     let clean = dateStr.toString().toLowerCase().trim();
-                    
                     if(clean.includes('t') || clean.match(/^\d{4}-\d{2}-\d{2}$/)) {
                         let d = new Date(clean);
                         if(!isNaN(d)) return { y: d.getFullYear(), m: d.getMonth() + 1, d: d.getDate() };
                     }
-                    
                     clean = clean.split(',')[0].split(' ')[0];
                     let parts = clean.includes('/') ? clean.split('/') : clean.split('-');
-                    
                     if (parts.length === 3) {
                         let p1 = parseInt(parts[0], 10);
                         let p2 = parseInt(parts[1], 10);
                         let p3 = parseInt(parts[2], 10);
-                        
                         if (parts[2] && parts[2].toString().length === 4) return { y: p3, m: p2, d: p1 }; 
                         if (parts[0] && parts[0].toString().length === 4) return { y: p1, m: p2, d: p3 };
                         return { y: 2000 + p3, m: p2, d: p1 }; 
@@ -573,11 +611,9 @@
                 const consolidado = {};
 
                 ventasDia.forEach(order => {
-                    let prodName = (order.producto || order.referencia || 'Producto Genérico').trim();
+                    let prodName = (order.producto || 'Producto Genérico').trim();
                     let cant = parseInt(order.cantidad) || 1;
-                    let precioRaw = order.precioUnitario || order.precio_unitario || order.precio || "0";
-                    let pUnit = parseFloat(precioRaw.toString().replace(/\D/g,'')) || 0;
-                    
+                    let pUnit = order.precioUnitario || 0;
                     let pTotal = cant * pUnit;
 
                     totalIngresos += pTotal;
@@ -591,13 +627,10 @@
                     }
                 });
 
-                document.getElementById('kpi-liq-total').textContent = formatCurrency(totalIngresos);
-                document.getElementById('kpi-liq-cant').textContent = totalProductos;
-
                 tableBodyLiq.innerHTML = '';
                 
                 if(Object.keys(consolidado).length === 0) {
-                    tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #94a3b8; font-weight:600; padding: 40px;">No hay ventas registradas para el rango seleccionado.</td></tr>`;
+                    tableBodyLiq.innerHTML = `<tr><td colspan="3" class="text-center" style="color: #94a3b8; font-weight:600; padding: 40px;">No hay ventas registradas en las fechas seleccionadas.</td></tr>`;
                     return;
                 }
 
@@ -614,7 +647,7 @@
                 const trTotal = document.createElement('tr');
                 trTotal.style.backgroundColor = '#f1f5f9';
                 trTotal.innerHTML = `
-                    <td style="font-weight: 800; color: #0f172a; text-align: right; text-transform: uppercase;">Total Consolidado:</td>
+                    <td style="font-weight: 800; color: #0f172a; text-align: right; text-transform: uppercase;">Total Facturado:</td>
                     <td class="text-center"><span class="td-cant" style="background: var(--primary); color: white;">${totalProductos}</span></td>
                     <td class="td-price" style="font-size: 16px; font-weight: 800; color: #059669;">${formatCurrency(totalIngresos)}</td>
                 `;
@@ -626,7 +659,7 @@
         // ACCIONES LOGÍSTICAS Y MODALES
         function gestionarMoto(orderId, index) {
             const order = dbOrders[index];
-            const msgDomi = `🛵 *NUEVO DOMICILIO STORE TRENDS*\n\n*Cliente:* ${order.cliente}\n*Celular:* ${order.telefono}\n*Ciudad:* ${order.ciudad}\n*Dirección:* ${order.direccion}\n*Pedido:* ${order.id}\n*Artículo:* ${order.producto} (Cant: ${order.cantidad})\n\nPor favor confirmar recibido.`;
+            const msgDomi = `🛵 *NUEVO DOMICILIO*\n\n*Cliente:* ${order.cliente}\n*Celular:* ${order.telefono}\n*Ciudad:* ${order.ciudad}\n*Dirección:* ${order.direccion}\n*Pedido:* ${order.id}\n*Artículo:* ${order.producto} (Cant: ${order.cantidad})\n\nPor favor confirmar recibido.`;
             window.open(`https://wa.me/${NUMERO_DOMICILIARIO}?text=${encodeURIComponent(msgDomi)}`, '_blank');
             dbOrders[index].guia = "MOTO-" + orderId;
             renderTable(); 
@@ -644,7 +677,7 @@
             document.body.removeChild(textarea);
 
             document.getElementById('modal-title').textContent = 'Datos Copiados';
-            document.getElementById('modal-message').innerHTML = `He copiado los datos de **${order.cliente}**.<br><br>Pega los datos en tu transportadora y escribe aquí la guía generada:`;
+            document.getElementById('modal-message').innerHTML = `He copiado los datos de **${order.cliente}**.\n\nPega los datos en tu transportadora y escribe aquí la guía generada:`;
             document.getElementById('modal-input-group').style.display = 'block';
             document.getElementById('modal-input-guia').value = "";
             document.getElementById('modal-btn-cancel').style.display = 'block';
@@ -667,7 +700,7 @@
 
         function notificarCliente(orderId, index) {
             const order = dbOrders[index];
-            let mensaje = `¡Hola ${order.cliente}! 👋\n\nTe confirmamos que tu pedido de Store Trends *${order.id}* ya fue despachado. 📦\n\n`;
+            let mensaje = `¡Hola ${order.cliente}! 👋\n\nTe confirmamos que tu pedido *${order.id}* ya fue despachado. 📦\n\n`;
             if (order.guia && order.guia.startsWith('MOTO')) {
                 mensaje += `🛵 Tu pedido va en camino con nuestro domiciliario a la dirección: ${order.direccion}.`;
             } else {
@@ -683,7 +716,6 @@
             document.getElementById('modal-input-guia').style.borderColor = "#e2e8f0";
         }
 
-        // INICIALIZACIÓN
         const hoy = new Date();
         document.getElementById('liq-date-start').valueAsDate = hoy;
         document.getElementById('liq-date-end').valueAsDate = hoy;
