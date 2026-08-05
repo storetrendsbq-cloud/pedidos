@@ -424,7 +424,7 @@
 
                         return {
                             id: buscar(['pedido', 'id']) || Object.values(fila)[1] || (i+1),
-                            cliente: buscar(['cliente', 'nombre']) || Object.values(fila)[8] || 'Sin nombre',
+                            cliente: buscar(['cliente']) || Object.values(fila)[8] || 'Sin nombre',
                             telefono: buscar(['tel', 'cel']) || Object.values(fila)[10] || 'Sin teléfono',
                             correo: buscar(['correo', 'email']) || Object.values(fila)[9] || 'Sin correo',
                             ciudad: buscar(['ciudad']) || Object.values(fila)[12] || '',
