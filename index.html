@@ -417,37 +417,41 @@
                 // Procesar Pedidos
                 if (resPedidos && resPedidos.ok) {
                     const datosExcel = await resPedidos.json();
+                    
                     dbOrders = datosExcel.filter(fila => fila['Número de Pedido'] || fila['# Pedido'] || Object.values(fila)[1]).reverse().map((fila, i) => {
-                        let buscar = (palabras) => {
+                        
+                        // Función buscar REPARADA: Busca columnas dinámicamente y excluye palabras para no confundir Cliente con Producto
+                        let buscar = (palabras, excluidos = []) => {
                             for(let key in fila) {
                                 let keyL = key.toLowerCase();
-                                if(palabras.some(p => keyL.includes(p))) return fila[key];
+                                if(palabras.some(p => keyL.includes(p)) && !excluidos.some(e => keyL.includes(e))) return fila[key];
                             }
                             return null;
-                const datosExcel = await respuesta.json();
-                
-                dbOrders = datosExcel.filter(fila => fila['# Pedido']).reverse().map((fila, i) => {
-                    return {
-                        id: fila['# Pedido'] || (i+1),
-                        cliente: fila['Nombre completo'] || fila['Cliente'] || 'Sin nombre',
-                        telefono: fila['Telefono'] || fila['Teléfono'] || 'Sin teléfono',
-                        correo: fila['Correo electrónico'] || fila['Correo'] || 'Sin correo',
-                        ciudad: fila['Ciudad'] || '',
-                        direccion: fila['Dirección'] || '',
-                        referencia: fila['Referencia'] || fila['Producto'] || 'Producto',
-                        talla: fila['Talla'] || 'N/A',
-                        cantidad: fila['Cantidad'] || '1',
-                        linkPago: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
-                        guia: fila['Guia'] ? fila['Guia'] : null,
-                        estado: fila['Estado'] || 'NUEVO'
-                    };
-                });
-                
-                renderTable();
+                        };
+
+                        return {
+                            id: buscar(['pedido', 'id']) || Object.values(fila)[1] || (i+1),
+                            fecha: buscar(['fecha']) || Object.values(fila)[2] || '',
+                            cliente: buscar(['cliente'], ['producto']) || 'Sin nombre',
+                            telefono: buscar(['tel']) || 'Sin teléfono',
+                            correo: buscar(['correo', 'email']) || 'Sin correo',
+                            ciudad: buscar(['ciudad']) || '',
+                            direccion: buscar(['dirección', 'direccion']) || '',
+                            producto: buscar(['producto', 'referencia']) || 'Producto',
+                            cantidad: buscar(['cant']) || '1',
+                            precioUnitario: buscar(['precio', 'unitario']) || 0,
+                            linkPago: Object.values(fila).find(val => typeof val === 'string' && val.includes('drive.google.com')),
+                            guia: buscar(['guia', 'guía']) || null,
+                            
+                            // LA SOLUCIÓN DEL ESTADO: Busca el nombre 'Estado' o fuerza la lectura de la Columna T (índice 19)
+                            estado: buscar(['estado']) || Object.values(fila)[19] || 'NUEVO'
+                        };
+                    });
+                    
+                    renderTable();
                     calcularKPIs();
                     calcularLiquidacion();
                 }
-
                 // Procesar PQR
                 if (resPQR && resPQR.ok) {
                     const datosPQR = await resPQR.json();
